@@ -6,7 +6,9 @@
    ```bash
    source .env
    ```
-   The `.env` file contains `GOOGLE_CLOUD_PROJECT` which is required for Gemini CLI authentication.
+   The `.env` file contains `GOOGLE_CLOUD_PROJECT` which is required for Gemini CLI authentication and setting the project.
+
+   
 
 ## Deployment Options
 
