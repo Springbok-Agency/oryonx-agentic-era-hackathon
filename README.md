@@ -20,7 +20,7 @@ The main goal of this project is to create a "Social Pulse Agent" that can:
 This project is organized as follows:
 
 ```
-my-awesome-agent/
+trend-marketeer/
 ├── app/                 # Core application code
 │   ├── agent.py         # Main agent logic
 │   ├── agent_engine_app.py # Agent Engine application logic

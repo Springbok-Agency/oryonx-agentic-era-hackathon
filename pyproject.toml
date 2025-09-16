@@ -1,9 +1,13 @@
 [project]
-name = "my-awesome-agent"
+name = "trend-marketeer"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Your Name", email = "your@email.com"},
+    {name = "Pol Roskam", email = "pol.roskam@springbokagency.com"},
+    {name = "Nena Verhoef", email = "nena.verhoef@springbokagency.com"},
+    {name = "Davy van der Horst", email = "davy.vanderhorst@springbokagency.com"},
+    {name = "Tom van den Broek", email = "tom.vandenbroek@springbokagency.com"},
+    {name = "Sjuul Visschers", email = "sjuul.visschers@springbokagency.com"}
 ]
 dependencies = [
     "google-adk~=1.8.0",
@@ -12,7 +16,7 @@ dependencies = [
     "google-cloud-aiplatform[evaluation,agent-engines]~=1.106.0"
 ]
 
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<=3.14"
 
 [dependency-groups]
 dev = [
