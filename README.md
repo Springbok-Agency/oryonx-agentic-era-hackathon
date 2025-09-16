@@ -1,49 +1,19 @@
-# PLACEHOLDER NAME
+# Social Pulse Agent
 
-## Getting Started
+An AI-powered social media monitoring and marketing automation tool that detects real-time trends and automatically generates marketing content.
 
-1. **Environment Setup**: Copy or create a `.env` file with your Google Cloud project:
-   ```bash
-   source .env
-   ```
-   The `.env` file contains `GOOGLE_CLOUD_PROJECT` which is required for Gemini CLI authentication and setting the project.
-
-   
-
-## Built on Agent Starter Pack
-https://github.com/GoogleCloudPlatform/agent-starter-pack
-
-
-## Deployment Options
-
-### Gemini CLI
-Use slash commands to deploy.
-
-## Gemini Code Reviews
-
-### Pull Request Review
-- Open a pull request in your repository and wait for automatic review
-- Comment `@gemini-cli /review` on an existing pull request to manually trigger a review
-
-### Issue Triage
-- Open an issue and wait for automatic triage
-- Comment `@gemini-cli /triage` on existing issues to manually trigger triaging
-
-### General AI Assistance
-In any issue or pull request, mention `@gemini-cli` followed by your request.
-
-Examples:
-- `@gemini-cli explain this code change`
-- `@gemini-cli suggest improvements for this function`
-- `@gemini-cli help me debug this error`
-- `@gemini-cli write unit tests for this component`
-
-
-
-# my-awesome-agent
-
-A base ReAct agent built with Google's Agent Development Kit (ADK)
+This project is a base ReAct agent built with Google's Agent Development Kit (ADK).
 Agent generated with [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) version `0.14.1`
+
+## Project Goals
+
+The main goal of this project is to create a "Social Pulse Agent" that can:
+
+*   Create a short marketing strategy plan.
+*   Generate Instagram posts, including:
+    *   Images
+    *   Matching videos (for Stories, Reels, and Posts)
+    *   Relevant hashtags
 
 ## Project Structure
 
@@ -132,7 +102,6 @@ The repository includes a Terraform configuration for the setup of a production 
 
 
 ## Monitoring and Observability
-> You can use [this Looker Studio dashboard](https://lookerstudio.google.com/reporting/46b35167-b38b-4e44-bd37-701ef4307418/page/tEnnC
-) template for visualizing events being logged in BigQuery. See the "Setup Instructions" tab to getting started.
+> You can use [this Looker Studio dashboard](https://lookerstudio.google.com/reporting/46b35167-b38b-4e44-bd37-701ef4307418/page/tEnnC) template for visualizing events being logged in BigQuery. See the "Setup Instructions" tab to getting started.
 
 The application uses OpenTelemetry for comprehensive observability with all events being sent to Google Cloud Trace and Logging for monitoring and to BigQuery for long term storage.
