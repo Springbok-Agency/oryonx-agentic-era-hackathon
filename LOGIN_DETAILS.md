@@ -1,6 +1,8 @@
 **Cloud console:**
 https://accounts.google.com/AddSession?service=accountsettings&sarp=1&continue=https%3A%2F%2Fconsole.cloud.google.com%2Fhome%2Fdashboard%3Fproject%3Dqwiklabs-gcp-03-3444594577c6#Email=
 
+Ze gaven de tip om incognito in te loggen. Profieltje aanmaken kan ook, is misschien hendig. 
+
 **Staging Project ID:**
 qwiklabs-gcp-03-3444594577c6
 
