@@ -88,6 +88,7 @@ def matchmaker_agent(product_dataframe, trends_news_dataframe):
         "mentions both the product and the news item. The connection should be amusing and inspire content creators "
         "to use it.\n"
         "IMPORTANT: Only return the json array, nothing else. Only use the data provided, do not make up any data."
+        "Do not make more than 10 matches.\n"
     )
 
     logger.info("Sending prompt to model for product-news matching.")
