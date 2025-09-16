@@ -1,19 +1,13 @@
-# Advantiv - Oryonx Agentic Era Hackathon
-
-A rebuilt version of Advantiv for the Oryonx Agentic Era Hackathon.
-
-## Overview
-
-This project represents a complete rebuild of Advantiv, focusing on maintainability and modern architecture.
+# PLACEHOLDER NAME
 
 ## Getting Started
 
-*Coming soon - setup instructions will be added as the project develops.*
+1. **Environment Setup**: Copy or create a `.env` file with your Google Cloud project:
+   ```bash
+   source .env
+   ```
+   The `.env` file contains `GOOGLE_CLOUD_PROJECT` which is required for Gemini CLI authentication.
 
-## Development
-
-*Development guidelines and setup instructions will be added as the project structure is established.*
-
-## Contributing
-
-*Contribution guidelines will be added as the project matures.*
+## Deployment options
+### Gemini CLI
+Use slash commands to deploy.
