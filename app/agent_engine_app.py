@@ -54,7 +54,7 @@ class AgentEngineApp(AdkApp):
         template_attributes = self._tmpl_attrs
 
         return self.__class__(
-            agent=copy.deepcopy(template_attributes["agent"]),
+            agent=template_attributes["agent"],
             enable_tracing=bool(template_attributes.get("enable_tracing", False)),
             session_service_builder=template_attributes.get("session_service_builder"),
             artifact_service_builder=template_attributes.get(
