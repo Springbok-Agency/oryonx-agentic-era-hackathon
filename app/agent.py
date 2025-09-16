@@ -16,10 +16,8 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import google_search, AgentTool
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-from mcp import StdioServerParameters
+
+from app.trend_watcher import trend_watcher
 
 
 _, project_id = google.auth.default()
@@ -27,30 +25,11 @@ os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
-
-search_agent = Agent(
-    name="search_agent",
-    model="gemini-2.5-flash",
-    instruction="You are a helpful AI assistant designed to provide accurate and useful information.",
-    tools=[google_search],
-)
-
 root_agent = Agent(
     name="root_agent",
     model="gemini-2.5-flash",
     instruction="You are a helpful AI assistant designed to provide accurate and useful information.",
-    tools=[
-        MCPToolset(
-            connection_params=StdioConnectionParams(
-                server_params = StdioServerParameters(
-                    command='uvx',
-                    args=["google-news-trends-mcp@latest"],
-                ),
-                timeout=30.0,
-            ),
-        )
-    , AgentTool(search_agent)
-    ],
+    sub_agents=[trend_watcher],
 )
 
 
