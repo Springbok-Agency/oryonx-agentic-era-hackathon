@@ -1,5 +1,5 @@
 # Project name used for resource naming
-project_name = "my-awesome-agent"
+project_name = "trend-marketeer"
 
 # Your Production Google Cloud project id
 prod_project_id = "your-production-project-id"
@@ -11,7 +11,7 @@ staging_project_id = "your-staging-project-id"
 cicd_runner_project_id = "your-cicd-project-id"
 
 # Name of the repository you added to Cloud Build
-repository_name = "my-awesome-agent"
+repository_name = "trend-marketeer"
 
 # The Google Cloud region you will use to deploy the infrastructure
 region = "europe-west4"
