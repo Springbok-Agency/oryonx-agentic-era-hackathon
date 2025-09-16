@@ -10,6 +10,10 @@
 
    
 
+## Built on Agent Starter Pack
+https://github.com/GoogleCloudPlatform/agent-starter-pack
+
+
 ## Deployment Options
 
 ### Gemini CLI
