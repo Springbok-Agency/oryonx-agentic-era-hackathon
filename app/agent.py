@@ -19,7 +19,6 @@ from google.adk.agents import Agent
 
 from app.trend_watcher import trend_watcher
 
-
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
@@ -28,7 +27,7 @@ os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 root_agent = Agent(
     name="root_agent",
     model="gemini-2.5-flash",
-    instruction="You are a helpful AI assistant designed to provide accurate and useful information.",
+    instruction="You are a helpful AI assistant designed to analyze trends, and create marketing content around them.",
     sub_agents=[trend_watcher],
 )
 
