@@ -1772,7 +1772,7 @@ wheels = [
 ]
 
 [[package]]
-name = "my-awesome-agent"
+name = "trend-marketeer"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
