@@ -1,5 +1,8 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools import google_search
+from google.adk.tools import AgentTool, google_search
+from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
+from mcp import StdioServerParameters
 
 search_agent = LlmAgent(
     name="search_agent",
@@ -13,8 +16,7 @@ trend_watcher = LlmAgent(
     model="gemini-2.5-flash",
     instruction="""You are a helpful AI assistant designed to find the latest trends in the news, including their reasoning and impact. 
 First, you find trends, and then you look online for more information about them.",
-    """
-    
+    """,
     tools=[
         MCPToolset(
             connection_params=StdioConnectionParams(
