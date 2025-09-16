@@ -29,6 +29,11 @@ terraform {
       version = "~> 6.5.0"
     }
   }
+
+  backend "gcs" {
+    bucket      = "agent-starter-pack-terraform-state"
+    prefix      = "terraform/state"
+  }
 }
 
 provider "google" {
