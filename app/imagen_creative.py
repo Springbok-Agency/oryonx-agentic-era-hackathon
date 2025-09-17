@@ -8,7 +8,6 @@ from google.genai import types
 from google.genai.types import Part
 from google.oauth2 import service_account
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -23,11 +22,9 @@ credentials = service_account.Credentials.from_service_account_file(
     ]
 )
 
-# Load environment variables first
 dotenv_path = Path(__file__).parent.parent / '.env'
 load_dotenv(dotenv_path=dotenv_path)
 
-# Initialize Google Gen AI Client with Vertex AI backend
 client = genai.Client(
     vertexai=True,
     project='qwiklabs-gcp-03-3444594577c6',
@@ -47,7 +44,7 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
         number_of_images: Number of images to generate
         reference_images: List of image paths or PIL Images to use as reference
     """
-    # Base text prompt
+
     text_prompt = (
         f"Create a high-quality, visually appealing image that represents the following marketing plan: {marketing_plan}. "
         f"The image should be creative, engaging, and suitable for use in a marketing campaign. "
@@ -70,15 +67,12 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
         logging.info(f"📝 Prompt: {text_prompt}")
         logging.info("⏳ Please wait...")
 
-        # Prepare content parts - start with text prompt
         content_parts = [text_prompt]
 
-        # Add reference images if provided
         if reference_images:
             for i, ref_image in enumerate(reference_images):
                 try:
                     if isinstance(ref_image, str):
-                        # Handle file path
                         with open(ref_image, 'rb') as f:
                             image_data = f.read()
                         content_parts.append(
@@ -131,8 +125,8 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
 
 if __name__ == '__main__':
     marketing_plan = "promote the gift card as a perfect present for any occasion, highlighting its versatility and ease of use. use the slogan; om van elke dag een cadeautje te maken (make every day a gift). the target audience is people looking for a convenient and thoughtful gift option for friends and family. the campaign should emphasize the wide range of products available on bol.com that can be purchased with the gift card, making it an ideal choice for birthdays, holidays, and special celebrations."
-    brandbook_bol = ("Use colors blue and white, modern and sleek design, minimalistic style, text in bold Arial font. "
-                     "The brand is called Rond.com and is a leading e-commerce platform in the Netherlands, known for its wide range of products ")
+    brandbook_bol = ("Use colors of the images, modern and sleek design, minimalistic style, text in bold Arial font. "
+                     "The brand is called Cirkel.com and is a leading e-commerce platform in the Netherlands, known for its wide range of products ")
 
     logging.info("=" * 60)
     logging.info("🎨 IMAGEN AI - MARKETING IMAGE GENERATOR (MIGRATED)")
