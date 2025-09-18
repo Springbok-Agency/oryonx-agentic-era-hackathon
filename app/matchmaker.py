@@ -4,7 +4,6 @@ import os
 
 import google.auth
 from dotenv import load_dotenv
-from google.adk.tools import FunctionTool
 from google.generativeai import GenerativeModel
 import google.generativeai as genai
 
@@ -51,6 +50,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
         logger.error(f"Failed to load trends_news_dataframe JSON: {e}")
         raise
 
+    # TODO: Use 2.5 Flash
     model = GenerativeModel("gemini-1.5-flash")
     logger.info("Initialized generative model.")
 
