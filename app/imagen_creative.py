@@ -103,12 +103,23 @@ def generate_and_show_images(
         )
 
     text_prompt = (
-        f"Create a high-quality, visually appealing image that represents the following marketing plan: {marketing_plan}. "
-        f"From this marketing plan, use the part that describes the core message or theme to inspire the image. "
-        f"The image should be creative, engaging, and suitable for use in a marketing campaign. "
-        f"Make sure that the image is relevant to the marketing plan and captures its essence. "
-        f"You are allowed to use text in the image. "
-        f"Make sure the image aligns with the following brandbook guidelines: {brandbook}."
+        f"Create a high-quality, visually appealing marketing image that represents the following marketing plan: {marketing_plan}. "
+        f"Focus on the image description elements from the marketing plan. "
+        f"IMPORTANT SAFETY GUIDELINES - DO NOT include: "
+        f"- Real people's names or specific individuals "
+        f"- Violence, gore, or harmful content "
+        f"- Sexually explicit or inappropriate content "
+        f"- Hate speech or discriminatory content "
+        f"- Dangerous activities or illegal substances "
+        f"- Impersonation of real people "
+        f"- Personally identifiable information "
+        f"Instead, use descriptive archetypes and characteristics. "
+        f"The image should be creative, engaging, and suitable for marketing campaigns. "
+        f"Focus on products, settings, emotions, and brand elements. "
+        f"You may include text overlays and graphics. "
+        f"Ensure the image aligns with these brand guidelines: {brandbook}. "
+        f"Use warm, inviting visuals with natural lighting and focus on product quality and positive emotions. "
+        f"Keep content family-friendly and appropriate for all audiences."
     )
 
     logging.info(f"Generating {number_of_images} image(s)...")

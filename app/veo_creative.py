@@ -99,11 +99,24 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
         )
 
     text_prompt = (
-        f"Create a high-quality, visually appealing video that represents the following marketing plan: {marketing_plan}. "
-        f"The video should be creative, engaging, and suitable for use in a marketing campaign. "
-        f"Make sure that the video is relevant to the marketing plan and captures its essence. "
-        f"You are allowed to use text in the video."
-        f"Make sure the video aligns with the following brandbook guidelines: {brandbook}."
+        f"Create a high-quality, visually appealing marketing video that represents the following marketing plan: {marketing_plan}. "
+        f"Focus on the video description elements from the marketing plan only. "
+        f"IMPORTANT SAFETY GUIDELINES - DO NOT include: "
+        f"- Real people's names or specific individuals "
+        f"- Violence, gore, or harmful content "
+        f"- Sexually explicit or inappropriate content "
+        f"- Hate speech or discriminatory content "
+        f"- Dangerous activities or illegal substances "
+        f"- Impersonation of real people "
+        f"- Personally identifiable information "
+        f"Instead, use descriptive archetypes and characteristics. "
+        f"The video should be creative, engaging, and suitable for marketing campaigns. "
+        f"Focus on products, settings, emotions, and brand elements. "
+        f"You may include text overlays and graphics. "
+        f"Ensure the video aligns with these brand guidelines: {brandbook}. "
+        f"Use warm, inviting visuals with natural lighting and focus on product quality and positive emotions. "
+        f"Keep content family-friendly and appropriate for all audiences."
+        f"The tag line must be there"
     )
 
     logging.info(f"📝 Prompt: {text_prompt}")
