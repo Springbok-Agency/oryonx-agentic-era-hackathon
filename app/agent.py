@@ -77,9 +77,11 @@ root_agent = Agent(
     ),
     tools=[
         AgentTool(trend_watcher_agent),
-        FunctionTool(func=get_product_data),
-        FunctionTool(func=matchmaker_agent),
+        # FunctionTool(func=get_product_data),
+        # FunctionTool(func=matchmaker_agent),
         # FunctionTool(func=marketing_agent),
+        get_product_data,
+        matchmaker_agent,
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(

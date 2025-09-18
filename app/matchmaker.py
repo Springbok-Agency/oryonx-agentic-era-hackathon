@@ -40,22 +40,8 @@ def matchmaker_agent(
         Returns an empty list if no matches are found or on error.
     """
     logger.info("Starting matchmaker_agent function.")
-    try:
-        product_dataframe = json.loads(product_dataframe_str)
-        logger.info(f"Loaded product_dataframe JSON successfully. Found {len(product_dataframe)} products.")
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to load product_dataframe JSON: {e}")
-        raise
 
-    try:
-        trends_news_dataframe = json.loads(trends_news_dataframe_str)
-        logger.info(f"Loaded trends_news_dataframe JSON successfully. Found {len(trends_news_dataframe)} trends.")
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to load trends_news_dataframe JSON: {e}")
-        raise
-
-    # TODO: Use 2.5 Flash
-    model = GenerativeModel("gemini-1.5-flash")
+    model = GenerativeModel("gemini-2.5-flash")
     logger.info("Initialized generative model.")
 
     system_prompt_sentiment = f"""You will receive a response from the model that should be a JSON array of news/trends.
@@ -71,7 +57,7 @@ def matchmaker_agent(
     - culturally sensitive
     - otherwise inappropriate
 
-    This will be your dataset to consider: {trends_news_dataframe}
+    This will be your dataset to consider: {trends_news_dataframe_str}
 
     IMPORTANT: Only return the json array, nothing else. Do not add any explanations or additional text.
     """
@@ -81,22 +67,13 @@ def matchmaker_agent(
         contents=[system_prompt_sentiment]
     )
     logger.info("Received filtered news/trends from model.")
-
-    product_dataframe_json = json.dumps(product_dataframe)
-    try:
-        # The model might return a string that is a JSON-encoded string.
-        # Loading it and dumping it again can normalize it.
-        filtered_news_obj = json.loads(news_without_sensitive_subjects.text)
-        trends_news_dataframe_json = json.dumps(filtered_news_obj)
-    except json.JSONDecodeError:
-        # If it's not a valid JSON string, use the raw text.
-        trends_news_dataframe_json = json.dumps(news_without_sensitive_subjects.text)
+    
 
     system_prompt_matching = f"""You are a witty content strategist. Your task is to find creative, funny, and compelling connections between products and trending news items using the provided dataframes.
 
     You receive two dataframes in JSON format: one with products, and one with Google trends and news articles.
-    product_dataframe: {product_dataframe_json}
-    trends_news_dataframe: {trends_news_dataframe_json}
+    product_dataframe_str: {product_dataframe_str}
+    trends_news_dataframe_str: {trends_news_dataframe_str}
 
     Your job is to critically evaluate each possible match. Only create a match if there is a clear, logical, and relevant and funny connection between the product and the news/trend item. Avoid forced or nonsensical matches. Do not match items that have no meaningful or interesting relationship.
 
@@ -119,12 +96,6 @@ def matchmaker_agent(
     )
     logger.info("Received matching response from model.")
 
-    try:
-        matches = json.loads(response_matching_process.text)
-        logger.info("Successfully parsed matches JSON.")
-        return matches
-    except json.JSONDecodeError:
-        logger.error("Error: The model did not return valid JSON.")
-        logger.error(f"Raw response: {response_matching_process.text}")
-        # Return empty list for error cases to maintain consistent return type
-        return []
+    matches = json.loads(response_matching_process.text)
+    logger.info("Successfully parsed matches JSON.")
+    return matches

@@ -38,12 +38,16 @@ def get_product_data(
     Returns:
         str: A JSON string containing the product data records.
     """
+    
+    print("Getting product data")
 
     client = bigquery.Client(project=project)
 
     query = f"SELECT * FROM `{project}.{dataset}.{table}` LIMIT {limit}"
     query_job = client.query(query)
     results = query_job.result()
+    
+    print("Got results")
     
     # Convert BigQuery Row objects to dictionaries and serialize dates
     products = []
@@ -53,6 +57,8 @@ def get_product_data(
         # Serialize any date objects
         serialized_row = {k: _serialize_date(v) for k, v in row_dict.items()}
         products.append(serialized_row)
+        
+    print("Done getting product data")
     
     # Convert to JSON string (compact format to avoid function call truncation)
     return json.dumps(products)
