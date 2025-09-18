@@ -84,12 +84,9 @@ root_agent = Agent(
         """
     ),
     tools=[
-        # Your sub-agent, correctly wrapped as a tool
-        AgentTool(trend_watcher),
-        # Your Python functions, now correctly wrapped as tools
+        AgentTool(trend_watcher_agent),
         FunctionTool(
             func=matchmaker_agent,
-            # Pass the static product data when defining the tool
             kwargs={"product_dataframe": product_dataframe},
         ),
         FunctionTool(func=marketing_agent),
