@@ -245,3 +245,4 @@ my_env.tfvars
 .env
 .requirements.txt
 app/service-account.json
+app/marketing_video.mp4
