@@ -23,52 +23,126 @@ logging.basicConfig(
 
 
 
-def generate_and_show_video(marketing_plan: str):
+def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
     """
-    Generates video using the new Google Gen AI SDK with optional reference images.
+    Generates video using Google Gen AI VEO model and returns the video URI.
 
     Args:
         marketing_plan: Description of the marketing campaign
+        brandbook: Optional brand guidelines to follow. If None, uses default brand guide.
+
+    Returns:
+        str: The URI of the generated video stored in Google Cloud Storage
     """
+    
+    if not brandbook:
+        brandbook = (
+            """
+            Brand Guide: The Taste of Home
+
+            Goal:
+            Create a consistent social media presence that is Artisanal, Warm, Authentic, and Personal.
+
+            ------------------------------------------------------------
+            1. Color Palette: Earthy & Fresh
+            ------------------------------------------------------------
+            Primary Colors:
+            Terracotta Orange (#D97D51)
+            Forest Green (#3A5A40)
+            Cream White (#F4F1DE)
+
+            Accent Colors:
+            Golden Yellow (#FFC300)
+            Soft Blue (#A8DADC)
+
+            ------------------------------------------------------------
+            2. Typography: Classic & Clean
+            ------------------------------------------------------------
+            Headlines: Use a classic serif font (e.g., Lora or Playfair Display)
+            Body & Prices: Use a clean sans-serif font (e.g., Lato or Montserrat)
+
+            ------------------------------------------------------------
+            3. Photography & Video: Natural & Fun
+            ------------------------------------------------------------
+            Visual Style:
+            Warm and inviting visuals
+            Use soft, natural daylight
+            Focus on texture and high-quality ingredients
+            Natural backgrounds (wood, linen, stone)
+
+            Guidelines:
+            Capture genuine, joyful moments with products
+            (e.g., tasting, baking, hands-on interactions)
+            Include helpful tips in short videos or overlays
+            Avoid overly posed or corporate imagery
+
+            ------------------------------------------------------------
+            4. Tone of Voice: Warm & Personal
+            ------------------------------------------------------------
+            Use a conversational, human tone
+            Write from a first-person or inclusive "we" perspective
+
+            Example Caption:
+            "Mijn absolute favoriet voor het weekend: onze oude boerenkaas. Ik eet 'm het liefst zo uit het vuistje. Geniet ervan!"
+
+            Keywords to Use:
+            Enjoy
+            Discover
+            Tip
+            Delicious
+
+            Calls-to-Action:
+            Try our favorite
+            Let us know what you think!
+            Taste the difference
+            """
+        )
 
     text_prompt = (
         f"Create a high-quality, visually appealing video that represents the following marketing plan: {marketing_plan}. "
         f"The video should be creative, engaging, and suitable for use in a marketing campaign. "
         f"Make sure that the video is relevant to the marketing plan and captures its essence. "
         f"You are allowed to use text in the video."
-        f"Make sure the video aligns with the following brandbook guidelines."
+        f"Make sure the video aligns with the following brandbook guidelines: {brandbook}."
     )
 
-    try:
-        logging.info(f"📝 Prompt: {text_prompt}")
-        logging.info("⏳ Please wait...")
+    logging.info(f"📝 Prompt: {text_prompt}")
+    logging.info("⏳ Please wait...")
 
-        operation = client.models.generate_videos(
-            model="veo-3.0-fast-generate-001",
-            prompt=text_prompt,
-            config=types.GenerateVideosConfig(aspectRatio="9:16"),
-        )
+    operation = client.models.generate_videos(
+        model="veo-3.0-fast-generate-001",
+        prompt=text_prompt,
+        config=types.GenerateVideosConfig(
+            aspectRatio="9:16",
+            output_gcs_uri="gs://hackathon_agent_oryonx/videos/"
+        ),
+    )
 
-        while not operation.done:
-            logging.info("Waiting for video generation to complete...")
-            time.sleep(20)
-            operation = client.operations.get(operation)
+    while not operation.done:
+        time.sleep(15)
+        operation = client.operations.get(operation)
+        print(operation)
 
-        video_path = "marketing_video.mp4"
+    if operation.response:
+        generated_video = operation.result.generated_videos[0]
+        generated_video_uri = generated_video.video.uri
+        print("Generated video URI: ", generated_video_uri)
+        
+        # Convert GCS URI to public HTTP URL
+        if generated_video_uri.startswith("gs://"):
+            bucket_name = generated_video_uri.split("/")[2]
+            object_name = "/".join(generated_video_uri.split("/")[3:])
+            public_url = f"https://storage.googleapis.com/{bucket_name}/{object_name}"
+            logging.info(f"Public video URL: {public_url}")
+            return {
+                "video_uri": generated_video_uri,
+                "public_url": public_url,
+                "bucket": bucket_name,
+                "object": object_name
+            }
+        else:
+            return {"video_uri": generated_video_uri}
 
-        generated_video = operation.response.generated_videos[0]
-        client.files.download(file=generated_video.video)
-        generated_video.video.save("marketing_video.mp4")
-        logging.info(
-            "Successfully generated video and saved to videos/marketing_video.mp4"
-        )
-
-        logging.info("Video generated successfully and saved to marketing_video.mp4")
-        return operation.response.generated_videos[0]
-
-    except Exception as e:
-        logging.error(f"Error generating video: {e!s}")
-        return {"error": str(e)}
 
 
 if __name__ == "__main__":
@@ -109,70 +183,13 @@ if __name__ == "__main__":
 
     **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
         """
-    brandbook = (
-        """
-        Brand Guide: The Taste of Home
-
-        Goal:
-        Create a consistent social media presence that is Artisanal, Warm, Authentic, and Personal.
-
-        ------------------------------------------------------------
-        1. Color Palette: Earthy & Fresh
-        ------------------------------------------------------------
-        Primary Colors:
-        Terracotta Orange (#D97D51)
-        Forest Green (#3A5A40)
-        Cream White (#F4F1DE)
-
-        Accent Colors:
-        Golden Yellow (#FFC300)
-        Soft Blue (#A8DADC)
-
-        ------------------------------------------------------------
-        2. Typography: Classic & Clean
-        ------------------------------------------------------------
-        Headlines: Use a classic serif font (e.g., Lora or Playfair Display)
-        Body & Prices: Use a clean sans-serif font (e.g., Lato or Montserrat)
-
-        ------------------------------------------------------------
-        3. Photography & Video: Natural & Fun
-        ------------------------------------------------------------
-        Visual Style:
-        Warm and inviting visuals
-        Use soft, natural daylight
-        Focus on texture and high-quality ingredients
-        Natural backgrounds (wood, linen, stone)
-
-        Guidelines:
-        Capture genuine, joyful moments with products
-        (e.g., tasting, baking, hands-on interactions)
-        Include helpful tips in short videos or overlays
-        Avoid overly posed or corporate imagery
-
-        ------------------------------------------------------------
-        4. Tone of Voice: Warm & Personal
-        ------------------------------------------------------------
-        Use a conversational, human tone
-        Write from a first-person or inclusive "we" perspective
-
-        Example Caption:
-        "Mijn absolute favoriet voor het weekend: onze oude boerenkaas. Ik eet 'm het liefst zo uit het vuistje. Geniet ervan!"
-
-        Keywords to Use:
-        Enjoy
-        Discover
-        Tip
-        Delicious
-
-        Calls-to-Action:
-        Try our favorite
-        Let us know what you think!
-        Taste the difference
-        """
-    )
+    
 
     logging.info("=" * 60)
     logging.info("🎨 VEO AI - MARKETING VIDEO GENERATOR")
     logging.info("=" * 60)
 
-    generate_and_show_video(brandbook, marketing_plan)
+    video = generate_and_show_video(marketing_plan, brandbook=None)
+    logging.info(f"Video generated successfully: {video}")
+    
+

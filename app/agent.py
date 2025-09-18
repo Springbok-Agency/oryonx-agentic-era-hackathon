@@ -23,7 +23,7 @@ from google.genai.types import ThinkingConfig
 
 from app.imagen_creative import generate_and_show_images
 from app.marketing_creative import marketing_agent
-from app.matchmaker import matchmaker_agent
+from app.matchmaker_agent import matchmaker_agent
 from app.product_data_retriever import get_product_data
 from app.trend_watcher_agent import trend_watcher_agent
 from app.veo_creative import generate_and_show_video
@@ -60,10 +60,11 @@ root_agent = Agent(
 
         1. FIRST: Call `trend_watcher_agent` with query "find current trending topics"
         2. SIMULTANEOUSLY: Call `get_product_data` to retrieve available products
-        3. THEN: Call `matchmaker_agent` with the trend and product data to find matches
-        4. THEN: Call `marketing_agent` with the matches to generate marketing insights. Use 1-1 / exact output of the marketing agent and give it back to the user and present the 3 options.
+        3. THEN: Call `matchmaker_agent` with the trend and product data to find matches. If there are no matches, you can be more creative and match more broadly.
+        4. THEN: Call `marketing_agent` with the matches to generate marketing insights. Use exact output of the marketing agent and give it back to the user and present the 3 options.
         5. THEN Let the user choose the best option.
         6. FINALLY: Use the input from the chosen marketing plan as input for the video and image generator to generate the video and image simultaneously.
+        7. RETURN: A small recap of the marketing plan and the returned video URI's and Image URI's.
 
 
         ## CRITICAL RULES:
@@ -84,7 +85,7 @@ root_agent = Agent(
     tools=[
         AgentTool(trend_watcher_agent),
         FunctionTool(func=get_product_data),
-        FunctionTool(func=matchmaker_agent),
+        AgentTool(matchmaker_agent),
         FunctionTool(func=marketing_agent),
         FunctionTool(func=generate_and_show_images),
         FunctionTool(func=generate_and_show_video),
