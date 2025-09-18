@@ -16,7 +16,9 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import google_search
+from google.adk.tools import AgentTool
+from google.adk.planners import BuiltInPlanner
+from google.genai.types import ThinkingConfig
 from app.trend_watcher_agent import trend_watcher_agent
 from app.matchmaker import matchmaker_agent, product_dataframe
 from app.marketing_creative import marketing_agent
