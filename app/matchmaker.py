@@ -37,14 +37,14 @@ def matchmaker_agent(
     logger.info("Starting matchmaker_agent function.")
     try:
         product_dataframe = json.loads(product_dataframe_str)
-        logger.info("Loaded product_dataframe JSON successfully.")
+        logger.info(f"Loaded product_dataframe JSON successfully. Found {len(product_dataframe)} products.")
     except json.JSONDecodeError as e:
         logger.error(f"Failed to load product_dataframe JSON: {e}")
         raise
 
     try:
         trends_news_dataframe = json.loads(trends_news_dataframe_str)
-        logger.info("Loaded trends_news_dataframe JSON successfully.")
+        logger.info(f"Loaded trends_news_dataframe JSON successfully. Found {len(trends_news_dataframe)} trends.")
     except json.JSONDecodeError as e:
         logger.error(f"Failed to load trends_news_dataframe JSON: {e}")
         raise
