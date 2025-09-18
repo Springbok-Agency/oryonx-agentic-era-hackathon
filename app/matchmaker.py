@@ -21,9 +21,9 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
-def matchmaker_agent_func(
+def matchmaker_agent(
     product_dataframe_str: str, trends_news_dataframe_str: str
-) -> list:
+) -> str:
     """
     Matches products to trending topics and news for marketing purposes.
 
@@ -96,6 +96,4 @@ def matchmaker_agent_func(
     )
     logger.info("Received matching response from model.")
 
-    matches = json.loads(response_matching_process.text)
-    logger.info("Successfully parsed matches JSON.")
-    return matches
+    return response_matching_process.text
