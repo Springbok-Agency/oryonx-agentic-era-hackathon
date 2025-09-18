@@ -17,11 +17,12 @@ import os
 import google.auth
 from google.adk.agents import Agent
 from google.adk.tools import AgentTool
-from google.adk.planners import BuiltInPlanner
+from google.adk.planners import BuiltInPlanner, PlanReActPlanner
 from google.genai.types import ThinkingConfig
 from app.trend_watcher_agent import trend_watcher_agent
 from app.matchmaker import matchmaker_agent, product_dataframe
 from app.marketing_creative import marketing_agent
+from google.genai import types
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
@@ -91,8 +92,36 @@ root_agent = Agent(
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
-            include_thoughts=True,
-            thinking_budget=1024,
+            include_thoughts=True,         # Include the agent's internal thoughts in the output for transparency
+            thinking_budget=1024,          # Limit the number of tokens/thoughts the agent can use for reasoning
         )
     ),
+    generate_content_config=types.GenerateContentConfig(
+        # High values are creative, low values are deterministic
+        temperature=0.2,
+        # Increase this if we want more detailed output.
+        max_output_tokens=250,
+        safety_settings=[
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
+                threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            )
+        ]
+    )
 )
