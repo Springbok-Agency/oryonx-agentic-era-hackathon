@@ -10,18 +10,13 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
 # Initialize the Gen AI client
-client = Client(
-    location="us-central1"
-)
+client = Client(location="us-central1")
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-
-
-
 
 
 def generate_and_show_images(
@@ -38,10 +33,9 @@ def generate_and_show_images(
     Returns:
         list: List of generated image objects with URIs pointing to GCS bucket
     """
-    
+
     if not brandbook:
-        brandbook = (
-            """
+        brandbook = """
             Brand Guide: The Taste of Home
 
             Goal:
@@ -100,7 +94,6 @@ def generate_and_show_images(
             Let us know what you think!
             Taste the difference
             """
-        )
 
     text_prompt = (
         f"Create a high-quality, visually appealing marketing image that represents the following marketing plan: {marketing_plan}. "
@@ -136,40 +129,42 @@ def generate_and_show_images(
             enhance_prompt=True,
             safety_filter_level="BLOCK_ONLY_HIGH",
             person_generation="ALLOW_ALL",
-            output_gcs_uri="gs://hackathon_agent_oryonx/images/"
+            output_gcs_uri="gs://hackathon_agent_oryonx/images/",
         ),
     )
 
-    logging.info(
-        f"Successfully generated {len(response.generated_images)} image(s)!"
-    )
+    logging.info(f"Successfully generated {len(response.generated_images)} image(s)!")
 
     # Convert GCS URIs to public HTTP URLs and log them
     result_images = []
     for i, generated_image in enumerate(response.generated_images):
-        if hasattr(generated_image, 'image') and hasattr(generated_image.image, 'uri'):
+        if hasattr(generated_image, "image") and hasattr(generated_image.image, "uri"):
             image_uri = generated_image.image.uri
             logging.info(f"Image {i + 1} URI: {image_uri}")
-            
+
             # Convert GCS URI to public HTTP URL
             if image_uri.startswith("gs://"):
                 bucket_name = image_uri.split("/")[2]
                 object_name = "/".join(image_uri.split("/")[3:])
-                public_url = f"https://storage.googleapis.com/{bucket_name}/{object_name}"
+                public_url = (
+                    f"https://storage.googleapis.com/{bucket_name}/{object_name}"
+                )
                 logging.info(f"Image {i + 1} public URL: {public_url}")
-                
-                result_images.append({
-                    "image_uri": image_uri,
-                    "public_url": public_url,
-                    "bucket": bucket_name,
-                    "object": object_name
-                })
+
+                result_images.append(
+                    {
+                        "image_uri": image_uri,
+                        "public_url": public_url,
+                        "bucket": bucket_name,
+                        "object": object_name,
+                    }
+                )
             else:
                 result_images.append({"image_uri": image_uri})
         else:
             logging.info(f"Image {i + 1} generated successfully")
             result_images.append(generated_image)
-    
+
     logging.info(
         f"All {len(response.generated_images)} image(s) generated successfully and saved to GCS bucket."
     )
@@ -183,5 +178,7 @@ if __name__ == "__main__":
     logging.info("IMAGEN AI - MARKETING IMAGE GENERATOR")
     logging.info("=" * 60)
 
-    images = generate_and_show_images(marketing_plan, brandbook=None, number_of_images=1)
+    images = generate_and_show_images(
+        marketing_plan, brandbook=None, number_of_images=1
+    )
     logging.info(f"Images generated successfully: {len(images)} image(s)")

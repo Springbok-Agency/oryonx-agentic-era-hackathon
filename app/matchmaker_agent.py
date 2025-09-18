@@ -140,7 +140,11 @@ matchmaker_agent = LlmAgent(
 
     Return only the final JSON array of matches, nothing else.
     """,
-    tools=[AgentTool(sensitive_content_filter), AgentTool(product_trend_matcher), FunctionTool(func=get_product_data)],
+    tools=[
+        AgentTool(sensitive_content_filter),
+        AgentTool(product_trend_matcher),
+        FunctionTool(func=get_product_data),
+    ],
     generate_content_config=types.GenerateContentConfig(
         temperature=0.2,  # Balanced for orchestration
         max_output_tokens=1500,

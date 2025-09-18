@@ -47,7 +47,7 @@ def generate_and_show_video(marketing_plan: str, brandbook: str | None = None):
         return {
             "placeholder": True,
             "message": "Video generation feature is temporarily unavailable. The veo-3.0-fast-generate-001 model is not accessible in the current environment.",
-            "prompt_used": text_prompt
+            "prompt_used": text_prompt,
         }
 
     except Exception as e:

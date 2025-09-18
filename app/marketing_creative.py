@@ -40,13 +40,17 @@ def _extract_matches(raw_matchmaker_output: str) -> list:
     end_index = raw_matchmaker_output.rfind("]")
     if start_index != -1 and end_index != -1 and end_index > start_index:
         try:
-            parsed_output = json.loads(raw_matchmaker_output[start_index : end_index + 1])
+            parsed_output = json.loads(
+                raw_matchmaker_output[start_index : end_index + 1]
+            )
             if isinstance(parsed_output, list):
                 return parsed_output
         except json.JSONDecodeError:
             pass
 
-    logger.warning("Unable to parse matchmaker output into JSON; falling back to empty matches.")
+    logger.warning(
+        "Unable to parse matchmaker output into JSON; falling back to empty matches."
+    )
     return []
 
 
