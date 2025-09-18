@@ -1,13 +1,9 @@
 import logging
 import os
-import platform
-import subprocess
 import time
 
 import google.auth
-from google.genai import types
-from google.genai import Client
-
+from google.genai import Client, types
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)

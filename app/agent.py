@@ -21,11 +21,11 @@ from google.adk.tools import AgentTool, FunctionTool
 from google.genai import types
 from google.genai.types import ThinkingConfig
 
+from app.imagen_creative import generate_and_show_images
+from app.marketing_creative import marketing_agent
 from app.matchmaker import matchmaker_agent
 from app.product_data_retriever import get_product_data
 from app.trend_watcher_agent import trend_watcher_agent
-from app.marketing_creative import marketing_agent
-from app.imagen_creative import generate_and_show_images
 from app.veo_creative import generate_and_show_video
 
 _, project_id = google.auth.default()

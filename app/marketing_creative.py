@@ -25,6 +25,31 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
+def _extract_matches(raw_matchmaker_output: str) -> list:
+    """Return a JSON-decoded list of matches or an empty list when decoding fails."""
+
+    try:
+        parsed_output = json.loads(raw_matchmaker_output)
+        if isinstance(parsed_output, list):
+            return parsed_output
+    except json.JSONDecodeError:
+        pass
+
+    # Some LLM responses wrap the JSON in prose or code fences—fish out the array if possible.
+    start_index = raw_matchmaker_output.find("[")
+    end_index = raw_matchmaker_output.rfind("]")
+    if start_index != -1 and end_index != -1 and end_index > start_index:
+        try:
+            parsed_output = json.loads(raw_matchmaker_output[start_index : end_index + 1])
+            if isinstance(parsed_output, list):
+                return parsed_output
+        except json.JSONDecodeError:
+            pass
+
+    logger.warning("Unable to parse matchmaker output into JSON; falling back to empty matches.")
+    return []
+
+
 def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
     """
     Calls the LMM (GenerativeModel) to create three marketing concepts for social media posts for Instagram, both image and video.
@@ -32,6 +57,9 @@ def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
     Returns a dictionary of concepts.
     """
     lmm_model = GenerativeModel("gemini-2.5-flash")
+
+    matches = _extract_matches(matchmaker_output)
+    selected_matches = matches[:num_concepts] if matches else []
 
     prompt = (
         "You are a creative marketing agent. Using the following product-news matches, generate ONE comprehensive marketing plan PER product-news item as a story that can be shared internally with stakeholders and is ready for direct implementation by the marketing team. "
@@ -62,11 +90,10 @@ def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
         "  - Make sure the main tagline is mentioned and both the news item and product are clearly referenced.\n"
         "- A catchy Instagram caption ready for posting.\n"
         "Use the following matches:\n"
-        + json.dumps(matchmaker_output[:num_concepts], indent=2)
+        + json.dumps(selected_matches, indent=2)
         + "\nIMPORTANT: Return only the three marketing plans as three, well-written stories and make sure you ask the end user which of the three marketing plans they prefer for further implementation."
     )
 
     response = lmm_model.generate_content(contents=[prompt])
-    
+
     return response.text
-    
