@@ -5,8 +5,6 @@ from typing import Any, Dict, List
 from google.cloud import bigquery
 
 
-
-
 GCP_PROJECT_ID = "qwiklabs-gcp-03-3444594577c6"
 BQ_DATASET = "product_data"
 BQ_TABLE = "product_data_table"
