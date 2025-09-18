@@ -64,8 +64,7 @@ root_agent = Agent(
         4. THEN: Call `marketing_agent` with the matches to generate marketing insights. Use exact output of the marketing agent and give it back to the user and present the 3 options.
         5. THEN Let the user choose the best option.
         6. FINALLY: Use the input from the chosen marketing plan as input for the video and image generator to generate the video and image simultaneously.
-        7. RETURN: A small recap of the marketing plan and the returned video URI's and Image URI's.
-
+        7. RETURN: A small recap of the marketing plan, the news trend, the context of the trend and the returned video URI's and Image URI's
 
         ## CRITICAL RULES:
         - NEVER ask "Would you like me to..." or "Should I start by..."
