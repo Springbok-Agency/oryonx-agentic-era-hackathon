@@ -86,8 +86,8 @@ Here is an example of the expected output format for two trends:
 """,
 )
 
-trend_watcher = SequentialAgent(
-    name="trend_watcher",
+trend_watcher_agent = SequentialAgent(
+    name="trend_watcher_agent",
     sub_agents=[
         google_trends_agent,
         google_search_agent,
