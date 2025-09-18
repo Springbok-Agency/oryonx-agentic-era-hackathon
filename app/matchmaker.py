@@ -21,9 +21,7 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
-def matchmaker_agent(
-    product_dataframe_str: str, trends_news_dataframe_str: str
-) -> str:
+def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str) -> str:
     """
     Matches products to trending topics and news for marketing purposes.
 
@@ -70,8 +68,6 @@ def matchmaker_agent(
 
     filtered_news_obj = json.loads(news_without_sensitive_subjects.text)
     trends_news_dataframe_str = json.dumps(filtered_news_obj)
-
-
 
     system_prompt_matching = f"""You are a witty content strategist. Your task is to find creative, funny, and compelling connections between products and trending news items using the provided dataframes.
 

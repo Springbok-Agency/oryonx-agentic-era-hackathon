@@ -11,16 +11,13 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
 # Initialize the Gen AI client
-client = Client(
-    location="us-central1"
-)
+client = Client(location="us-central1")
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-
 
 
 def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
@@ -34,10 +31,9 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
     Returns:
         str: The URI of the generated video stored in Google Cloud Storage
     """
-    
+
     if not brandbook:
-        brandbook = (
-            """
+        brandbook = """
             Brand Guide: The Taste of Home
 
             Goal:
@@ -96,7 +92,6 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
             Let us know what you think!
             Taste the difference
             """
-        )
 
     text_prompt = (
         f"Create a high-quality, visually appealing marketing video that represents the following marketing plan: {marketing_plan}. "
@@ -126,8 +121,7 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
         model="veo-3.0-fast-generate-001",
         prompt=text_prompt,
         config=types.GenerateVideosConfig(
-            aspectRatio="9:16",
-            output_gcs_uri="gs://hackathon_agent_oryonx/videos/"
+            aspectRatio="9:16", output_gcs_uri="gs://hackathon_agent_oryonx/videos/"
         ),
     )
 
@@ -140,7 +134,7 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
         generated_video = operation.result.generated_videos[0]
         generated_video_uri = generated_video.video.uri
         print("Generated video URI: ", generated_video_uri)
-        
+
         # Convert GCS URI to public HTTP URL
         if generated_video_uri.startswith("gs://"):
             bucket_name = generated_video_uri.split("/")[2]
@@ -151,11 +145,10 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
                 "video_uri": generated_video_uri,
                 "public_url": public_url,
                 "bucket": bucket_name,
-                "object": object_name
+                "object": object_name,
             }
         else:
             return {"video_uri": generated_video_uri}
-
 
 
 if __name__ == "__main__":
@@ -196,7 +189,6 @@ if __name__ == "__main__":
 
     **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
         """
-    
 
     logging.info("=" * 60)
     logging.info("🎨 VEO AI - MARKETING VIDEO GENERATOR")
@@ -204,5 +196,3 @@ if __name__ == "__main__":
 
     video = generate_and_show_video(marketing_plan, brandbook=None)
     logging.info(f"Video generated successfully: {video}")
-    
-
