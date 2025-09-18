@@ -42,7 +42,7 @@ def marketing_agent(matchmaker_output, lmm_model=None, num_concepts=3):
         "- A vivid description of the news items and their connection to the products.\n"
         "- A clear marketing strategy, including purpose, timing, and target audience.\n"
         "- The main tagline, seamlessly integrated into the story and should have a clear reference to the news item to make the connection clear to the audience.\n"
-        "- Detailed ideas for both an Instagram image and video post, with the main tagline included.\n"
+        "- Detailed ideas for both an Instagram image and video post, with the main tagline included. The image and video concepts should be funny, and clearly reference the news item in a creative way.\n"
         "- A catchy Instagram caption ready for posting.\n"
         "Use the following matches:\n" + json.dumps(matchmaker_output[:num_concepts], indent=2) +
         "\nIMPORTANT: Return only the three marketing plans as three, well-written stories and make sure you ask the end user which of the three marketing plans they prefer for further implementation."
@@ -128,10 +128,11 @@ if __name__ == '__main__':
   # Example: use the first three matches from matchmaker_dataframe
   matchmaker_output = json.loads(matchmaker_dataframe)
   concepts = marketing_agent(matchmaker_output)
-  if concepts:
-    for i, concept in enumerate(concepts, 1):
-      print(f"Concept {i}:")
-      print(f"Product: {concept['product']}")
-      print(f"Tagline: {concept['tagline']}")
-      print(f"Marketing Plan:\n{concept['marketing_plan']}")
-      print("-"*40)
+  print(concepts)
+#   if concepts:
+#     for i, concept in enumerate(concepts, 1):
+#       print(f"Concept {i}:")
+#       print(f"Product: {concept['product']}")
+#       print(f"Tagline: {concept['tagline']}")
+#       print(f"Marketing Plan:\n{concept['marketing_plan']}")
+#       print("-"*40)
