@@ -1,11 +1,10 @@
-import json
 import logging
 import os
 
 import google.auth
+from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
 from google.adk.tools import AgentTool, FunctionTool
-from dotenv import load_dotenv
 from google.genai import types
 
 from app.product_data_retriever import get_product_data
