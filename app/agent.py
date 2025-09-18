@@ -84,7 +84,6 @@ root_agent = Agent(
             ```
         """
     ),
-    
     tools=[
         AgentTool(trend_watcher_agent),
         # FunctionTool(func=matchmaker_agent),
@@ -92,8 +91,8 @@ root_agent = Agent(
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
-            include_thoughts=True,         # Include the agent's internal thoughts in the output for transparency
-            thinking_budget=1024,          # Limit the number of tokens/thoughts the agent can use for reasoning
+            include_thoughts=True,  # Include the agent's internal thoughts in the output for transparency
+            thinking_budget=1024,  # Limit the number of tokens/thoughts the agent can use for reasoning
         )
     ),
     generate_content_config=types.GenerateContentConfig(
@@ -121,7 +120,7 @@ root_agent = Agent(
             types.SafetySetting(
                 category=types.HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
                 threshold=types.HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-            )
-        ]
-    )
+            ),
+        ],
+    ),
 )
