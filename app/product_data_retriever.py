@@ -6,13 +6,13 @@ BQ_TABLE = "product_data_table"
 
 
 def get_product_data(project=GCP_PROJECT_ID, dataset=BQ_DATASET, table=BQ_TABLE, limit=10):
-    """Fetch product data from BigQuery.
+    """Get all product data from BigQuery.
 
     Args:
-        project (str): GCP project ID.
-        dataset (str): BigQuery dataset name.
-        table (str): BigQuery table name.
-        limit (int): Number of records to fetch.
+        project (str, optional): GCP project ID.
+        dataset (str, optional): BigQuery dataset name.
+        table (str, optional): BigQuery table name.
+        limit (int, optional): Number of records to fetch.
 
     Returns:
         list[dict]: A list of product data records.
