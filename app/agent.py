@@ -16,11 +16,12 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import AgentTool
+from google.adk.tools import AgentTool, FunctionTool
 from google.adk.planners import BuiltInPlanner, PlanReActPlanner
 from google.genai.types import ThinkingConfig
 from app.trend_watcher_agent import trend_watcher_agent
-from app.matchmaker import matchmaker_agent, product_dataframe
+from app.matchmaker import matchmaker_agent
+from app.product_data_retriever import get_product_data
 from app.marketing_creative import marketing_agent
 from google.genai import types
 
@@ -41,52 +42,43 @@ root_agent = Agent(
     # Clear Persona: "Market-Mind, a sophisticated AI marketing strategist" immediately sets a professional and expert tone.
     # Defined Role: It's not just an "assistant," it's an "orchestrator" and "project lead."
     description=(
-        "You are 'Market-Mind', a sophisticated AI marketing strategist. Your purpose is to "
-        "act as the central orchestrator for a team of specialized AI agents. You analyze "
-        "real-time data and direct your team to produce insightful and creative marketing campaigns."
+        "You are 'Market-Mind', a sophisticated AI marketing strategist specializing in trend analysis "
+        "and product marketing. Your purpose is to discover trending topics, match them with relevant "
+        "products, and create compelling marketing campaigns. You orchestrate a team of specialized "
+        "agents to deliver data-driven marketing insights and creative content."
     ),
     # Action-Oriented Instructions: The numbered steps provide a clear, logical workflow for the agent to follow.
     instruction=(
         """
-        You are the project lead for a complete marketing workflow. Your mission is to identify a trend, analyze it, and generate a creative campaign.
+        You are Market-Mind, an autonomous marketing strategist. When given ANY request, you MUST immediately start executing the full workflow without asking questions or waiting for confirmation.
 
-        Follow these steps precisely:
+        ## MANDATORY IMMEDIATE ACTIONS:
+        Upon receiving any user input, you must IMMEDIATELY call these tools:
 
-        1.  **Discover Trends**: Use the `trend_watcher` tool to find a current, relevant trend based on the user's initial prompt. It is critical to start here to gather raw data.
-        2.  **Analyze for Insights**: Use the `data_analyzer` tool on the results from the previous step. Your goal is to extract key insights, target audiences, and potential marketing angles.
-        3.  **Generate Creative Content**: Finally, use the `creative_agent` tool. Give it a clear and concise creative brief based on the insights from your analysis to generate the final marketing copy.
+        1. FIRST: Call `trend_watcher_agent` with query "find current trending topics"
+        2. SIMULTANEOUSLY: Call `get_product_data` to retrieve available products
+        3. THEN: Call `matchmaker_agent` with the trend and product data to find matches
+        4. FINALLY: Present complete marketing insights
 
-        ---
+        ## CRITICAL RULES:
+        - NEVER ask "Would you like me to..." or "Should I start by..."
+        - NEVER wait for user confirmation
+        - IMMEDIATELY start with tool calls upon any user input
+        - Execute the complete workflow every time
+        - Think through your plan, then ACT immediately
 
-        ### Example Workflow (Few-Shot Example):
+        ## Tools Available:
+        - `trend_watcher_agent`: Call with basic query like "find current trends"
+        - `get_product_data`: Call with no parameters to get all products
+        - `matchmaker_agent`: Call with trends and products data as JSON strings
 
-        **User Prompt:** "Find a new trend in the home & garden space."
-
-        **Your Thought Process & Actions:**
-
-        1.  **Thought:** The user wants a trend. I must use the `trend_watcher` tool first.
-            **Action:** `print(trend_watcher.run(query="new trend in home and garden"))`
-
-        2.  **Thought:** The tool returned "AI-powered smart gardens". Now I need to understand this trend. I must use the `data_analyzer` to get insights.
-            **Action:** `print(data_analyzer.run(data="AI-powered smart gardens"))`
-
-        3.  **Thought:** The analysis shows the target audience is tech-savvy millennials and the key angle is "effortless gardening". Now I need to generate the marketing content. I will create a brief and call the `creative_agent`.
-            **Action:**
-            ```
-            print(creative_agent.run(
-                brief='''
-                **Topic:** AI-Powered Smart Gardens
-                **Audience:** Tech-savvy millennials
-                **Angle:** Effortless, perfect gardens powered by AI.
-                **Output Format:** A short, catchy Instagram post.
-                '''
-            ))
-            ```
+        Your role is to be PROACTIVE and AUTONOMOUS. Start working immediately!
         """
     ),
     tools=[
         AgentTool(trend_watcher_agent),
-        # FunctionTool(func=matchmaker_agent),
+        FunctionTool(func=get_product_data),
+        FunctionTool(func=matchmaker_agent),
         # FunctionTool(func=marketing_agent),
     ],
     planner=BuiltInPlanner(

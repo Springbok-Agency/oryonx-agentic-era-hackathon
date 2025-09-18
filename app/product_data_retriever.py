@@ -1,4 +1,5 @@
 
+import json
 from google.cloud import bigquery
 import datetime
 def convert_dates(obj):
@@ -19,7 +20,7 @@ BQ_DATASET = "product_data"
 BQ_TABLE = "product_data_table"
 
 
-def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, table: str = BQ_TABLE, limit: int = 40):
+def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, table: str = BQ_TABLE, limit: int = 10):
     """Get all product data from BigQuery.
 
     Args:
@@ -39,3 +40,7 @@ def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, t
     results = query_job.result()
     products = [dict(row) for row in results]
     return convert_dates(products)
+
+
+if __name__ == "__main__":
+    print(json.dumps(get_product_data(), indent=4))

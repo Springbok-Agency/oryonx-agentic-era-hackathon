@@ -1,55 +1,120 @@
-# Social Pulse Agent
+# Market-Mind: The Agentic Marketing Strategist
 
-An AI-powered social media monitoring and marketing automation tool that detects real-time trends and automatically generates marketing content.
+An autonomous agent system for generating trend-driven marketing campaigns, built with the Google Agent Development Kit (ADK) for the Agentic Era Hackathon.
 
-This project is a base ReAct agent built with Google's Agent Development Kit (ADK).
-Agent generated with [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) version `0.14.1`
+## Overview
 
-## Project Goals
+Market-Mind is an advanced multi-agent system designed to automate the entire lifecycle of a marketing campaign, from initial trend discovery to final creative content generation. It acts as a sophisticated AI marketing strategist that can identify what's currently popular, intelligently match those trends with a given product catalog, and then produce ready-to-use marketing concepts.
 
-The main goal of this project is to create a "Social Pulse Agent" that can:
+This project leverages a hierarchical agent architecture to create a modular, powerful, and autonomous workflow.
 
-*   Create a short marketing strategy plan.
-*   Generate Instagram posts, including:
-    *   Images
-    *   Matching videos (for Stories, Reels, and Posts)
-    *   Relevant hashtags
+Built with [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) version `0.14.1`
+
+## Features
+
+- **Autonomous End-to-End Workflow**: Manages the entire campaign process with minimal human input
+- **Real-Time Trend Analysis**: Utilizes a specialized agent to discover and analyze current market trends
+- **Intelligent Product Matching**: Analyzes trend data to find the most relevant products from a catalog to promote
+- **Creative Content Generation**: Produces marketing concepts and copy based on the trend and product match
+- **Orchestration with Planning**: Powered by a master agent using Gemini 2.5 Pro and a BuiltInPlanner to intelligently reason and execute the workflow
+
+## Architecture
+
+The system is built on a hierarchical agent architecture, with a central master agent orchestrating a team of specialized tools and sub-agents.
+
+### 1. Master Agent (root_agent)
+This is the "brain" of the operation. It's a powerful LlmAgent responsible for orchestrating the entire workflow.
+- **Model**: gemini-2.5-pro
+- **Planner**: BuiltInPlanner to enable multi-step reasoning and planning
+- **Role**: To interpret the user's initial request and call its specialized tools in the correct sequence to achieve the goal. It does not perform the tasks itself, but delegates to its tools.
+
+### 2. Tool 1: Trend Watcher (trend_watcher_agent)
+This is a self-contained sub-agent whose sole purpose is to identify and analyze current trends. It runs its own internal sequence to find relevant topics and format them for the next step.
+
+### 3. Tool 2: Matchmaker (matchmaker_agent)
+This is a function tool that acts as the analytical core. It receives the trend data from the trend_watcher and compares it against a predefined product catalog to find the most commercially relevant matches.
+
+### 4. Tool 3: Product Data Retriever (get_product_data)
+This function tool retrieves product information from BigQuery database to provide the matchmaker with available product data.
+
+### 5. Tool 4: Creative Agent (marketing_agent)
+This function tool handles the final creative step. It takes the output from the matchmaker—the trend and the matched products—and generates compelling marketing copy and concepts.
+
+## How It Works
+
+The agent operates in a sequential, orchestrated workflow managed by the root_agent:
+
+1. **User Prompt**: The user provides a high-level goal, such as "Find a new marketing angle for our products."
+2. **Discover Trends**: The root_agent's planner determines that the first step is to find a trend. It calls the trend_watcher_agent tool.
+3. **Get Product Data**: The root_agent calls get_product_data to retrieve available products from BigQuery.
+4. **Analyze and Match**: The root_agent takes the trends and product data and passes them to the matchmaker_agent tool. This tool returns a data structure containing the best trend-product matches.
+5. **Generate Creative**: The root_agent takes the matched data and passes it to the marketing_agent tool to generate the final campaign ideas.
+6. **Final Response**: The generated marketing content is returned to the user as the final answer.
 
 ## Project Structure
 
 This project is organized as follows:
 
 ```
-trend-marketeer/
-├── app/                 # Core application code
-│   ├── agent.py         # Main agent logic
-│   ├── agent_engine_app.py # Agent Engine application logic
-│   └── utils/           # Utility functions and helpers
-├── .github/             # CI/CD pipeline configurations for GitHub Actions
-├── deployment/          # Infrastructure and deployment scripts
-├── notebooks/           # Jupyter notebooks for prototyping and evaluation
-├── tests/               # Unit, integration, and load tests
-├── Makefile             # Makefile for common commands
-├── GEMINI.md            # AI-assisted development guide
-└── pyproject.toml       # Project dependencies and configuration
+oryonx-agentic-era-hackathon/
+├── app/                          # Core application code
+│   ├── agent.py                  # Main orchestrator agent (Market-Mind)
+│   ├── trend_watcher_agent.py    # Trend discovery and analysis
+│   ├── matchmaker.py             # Product-trend matching logic
+│   ├── product_data_retriever.py # BigQuery product data access
+│   ├── marketing_creative.py     # Marketing content generation
+│   ├── imagen_creative.py        # Image generation capabilities
+│   ├── veo_creative.py           # Video generation capabilities
+│   └── agent_engine_app.py       # Agent Engine application logic
+├── .github/                      # CI/CD pipeline configurations
+├── deployment/                   # Infrastructure and deployment scripts
+├── notebooks/                    # Jupyter notebooks for prototyping
+├── tests/                        # Unit, integration, and load tests
+├── Makefile                      # Development commands
+├── GEMINI.md                     # AI-assisted development guide
+├── CLAUDE.md                     # Claude Code guidance
+└── pyproject.toml                # Project dependencies and configuration
 ```
 
-## Requirements
+## Getting Started
+
+### Prerequisites
 
 Before you begin, ensure you have:
 - **uv**: Python package manager (used for all dependency management in this project) - [Install](https://docs.astral.sh/uv/getting-started/installation/) ([add packages](https://docs.astral.sh/uv/concepts/dependencies/) with `uv add <package>`)
 - **Google Cloud SDK**: For GCP services - [Install](https://cloud.google.com/sdk/docs/install)
 - **Terraform**: For infrastructure deployment - [Install](https://developer.hashicorp.com/terraform/downloads)
 - **make**: Build automation tool - [Install](https://www.gnu.org/software/make/) (pre-installed on most Unix-based systems)
+- A Google Cloud project with the necessary APIs enabled
+- Authenticated gcloud CLI (`gcloud auth application-default login`)
 
+### Installation
 
-## Quick Start (Local Testing)
+1. Clone the repository
+2. Install the required dependencies:
 
-Install required packages and launch the local development environment:
 
 ```bash
-make install && make playground
+make install
 ```
+
+3. Create a `.env` file in the root directory and add your Google Cloud Project ID and other necessary environment variables
+
+### Running the Agent
+
+You can run the agent system using the ADK command-line interface:
+
+**Run in interactive mode:**
+```bash
+adk run
+```
+Then, enter a prompt like: "Find a new trend for me"
+
+**Run with a web interface:**
+```bash
+make playground
+```
+This will launch a Streamlit web UI where you can interact with the agent.
 
 ## Commands
 
@@ -105,3 +170,11 @@ The repository includes a Terraform configuration for the setup of a production 
 > You can use [this Looker Studio dashboard](https://lookerstudio.google.com/reporting/46b35167-b38b-4e44-bd37-701ef4307418/page/tEnnC) template for visualizing events being logged in BigQuery. See the "Setup Instructions" tab to getting started.
 
 The application uses OpenTelemetry for comprehensive observability with all events being sent to Google Cloud Trace and Logging for monitoring and to BigQuery for long term storage.
+
+## Key Technologies
+
+- **Google Agent Development Kit (ADK)**
+- **Google Gemini 2.5 Pro/Flash**
+- **Python 3.10+**
+- **BigQuery** for product data storage
+- **OpenTelemetry** for observability
