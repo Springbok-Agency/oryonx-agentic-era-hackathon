@@ -84,15 +84,3 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
     except Exception as e:
         logging.error(f"❌ Error generating images: {str(e)}")
         return {"error": str(e)}
-
-
-if __name__ == '__main__':
-    marketing_plan = "promote the gift card as a perfect present for any occasion, highlighting its versatility and ease of use. use the slogan; om van elke dag een cadeautje te maken (make every day a gift). the target audience is people looking for a convenient and thoughtful gift option for friends and family. the campaign should emphasize the wide range of products available on bol.com that can be purchased with the gift card, making it an ideal choice for birthdays, holidays, and special celebrations."
-    brandbook_bol = ("Use colors of the images, modern and sleek design, minimalistic style, text in bold Arial font. "
-                     "The brand is called Bol.com and is a leading e-commerce platform in the Netherlands, known for its wide range of products ")
-
-    logging.info("=" * 60)
-    logging.info("🎨 IMAGEN AI - MARKETING IMAGE GENERATOR")
-    logging.info("=" * 60)
-
-    generate_and_show_images(brandbook_bol, marketing_plan, number_of_images=3)

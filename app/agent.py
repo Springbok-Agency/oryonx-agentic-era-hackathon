@@ -16,10 +16,15 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import google_search
+from google.adk.planners import BuiltInPlanner
+from google.adk.tools import google_search, AgentTool, FunctionTool
+from google.genai.types import ThinkingConfig
+
 from app.trend_watcher_agent import trend_watcher_agent
 from app.matchmaker import matchmaker_agent, product_dataframe
 from app.marketing_creative import marketing_agent
+from app.imagen_creative import generate_and_show_images
+from app.veo_creative import generate_and_show_video
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
@@ -84,8 +89,10 @@ root_agent = Agent(
     
     tools=[
         AgentTool(trend_watcher_agent),
-        # FunctionTool(func=matchmaker_agent),
-        # FunctionTool(func=marketing_agent),
+        FunctionTool(func=matchmaker_agent),
+        FunctionTool(func=marketing_agent),
+        FunctionTool(func=generate_and_show_images),
+        FunctionTool(func=generate_and_show_video)
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
