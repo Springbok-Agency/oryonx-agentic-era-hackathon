@@ -1,7 +1,9 @@
-
-import json
-from google.cloud import bigquery
 import datetime
+import json
+
+from google.cloud import bigquery
+
+
 def convert_dates(obj):
     """
     Recursively convert date and datetime objects in dicts/lists to ISO strings.
@@ -15,12 +17,18 @@ def convert_dates(obj):
     else:
         return obj
 
+
 GCP_PROJECT_ID = "qwiklabs-gcp-03-3444594577c6"
 BQ_DATASET = "product_data"
 BQ_TABLE = "product_data_table"
 
 
-def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, table: str = BQ_TABLE, limit: int = 10):
+def get_product_data(
+    project: str = GCP_PROJECT_ID,
+    dataset: str = BQ_DATASET,
+    table: str = BQ_TABLE,
+    limit: int = 10,
+):
     """Get all product data from BigQuery.
 
     Args:
@@ -38,9 +46,9 @@ def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, t
     query = f"SELECT * FROM `{project}.{dataset}.{table}` LIMIT {limit}"
     query_job = client.query(query)
     results = query_job.result()
-    products = [dict(row) for row in results]
+    products = [json.dumps(row) for row in results]
     return convert_dates(products)
 
 
 if __name__ == "__main__":
-    print(json.dumps(get_product_data(), indent=4))
+    print(get_product_data())

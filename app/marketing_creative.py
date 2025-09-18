@@ -1,21 +1,14 @@
-import datetime
-import os
-from urllib import response
-from zoneinfo import ZoneInfo
 import json
 import logging
+import os
+
 import google.adk.agents
 import google.auth
-from dotenv import load_dotenv
-from google.adk import Agent
-from google.generativeai import GenerativeModel
-from typing import Any, Dict, List, Optional
 import google.generativeai as genai
+from dotenv import load_dotenv
+from google.generativeai import GenerativeModel
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 load_dotenv()
@@ -32,7 +25,7 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
-def marketing_agent(matchmaker_output: str,num_concepts: int = 3) -> str:
+def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
     """
     Calls the LMM (GenerativeModel) to create three marketing concepts for social media posts for Instagram, both image and video.
     Each concept includes: a marketing plan, a funny tagline, and the product name.
@@ -68,8 +61,9 @@ def marketing_agent(matchmaker_output: str,num_concepts: int = 3) -> str:
         "  - Ambiance: Mood, music and lighting (warm tones, blue light, nighttime, etc.).\n"
         "  - Make sure the main tagline is mentioned and both the news item and product are clearly referenced.\n"
         "- A catchy Instagram caption ready for posting.\n"
-        "Use the following matches:\n" + json.dumps(matchmaker_output[:num_concepts], indent=2) +
-        "\nIMPORTANT: Return only the three marketing plans as three, well-written stories and make sure you ask the end user which of the three marketing plans they prefer for further implementation."
+        "Use the following matches:\n"
+        + json.dumps(matchmaker_output[:num_concepts], indent=2)
+        + "\nIMPORTANT: Return only the three marketing plans as three, well-written stories and make sure you ask the end user which of the three marketing plans they prefer for further implementation."
     )
 
     response = lmm_model.generate_content(contents=[prompt])

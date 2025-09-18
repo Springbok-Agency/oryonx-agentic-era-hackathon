@@ -3,14 +3,11 @@ import logging
 import os
 
 import google.auth
+import google.generativeai as genai
 from dotenv import load_dotenv
 from google.generativeai import GenerativeModel
-import google.generativeai as genai
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 load_dotenv()
@@ -24,7 +21,9 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
-def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str) -> dict:
+def matchmaker_agent(
+    product_dataframe_str: str, trends_news_dataframe_str: str
+) -> dict:
     """
     Agent that receives products, google trends and news articles and finds matches between them for marketing purposes.
 
@@ -54,7 +53,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
     model = GenerativeModel("gemini-1.5-flash")
     logger.info("Initialized generative model.")
 
-    system_prompt_sentiment = f'''You will receive a response from the model that should be a JSON array of news/trends.
+    system_prompt_sentiment = f"""You will receive a response from the model that should be a JSON array of news/trends.
 
     You are to delete the sensitive subjects from the json. Sensitive content is defined as any content that could be considered:
     - violent
@@ -70,7 +69,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
     This will be your dataset to consider: {trends_news_dataframe}
 
     IMPORTANT: Only return the json array, nothing else. Do not add any explanations or additional text.
-    '''
+    """
 
     logger.info("Sending prompt to model for sensitive subject filtering.")
     news_without_sensitive_subjects = model.generate_content(
@@ -88,8 +87,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
         # If it's not a valid JSON string, use the raw text.
         trends_news_dataframe_json = json.dumps(news_without_sensitive_subjects.text)
 
-
-    system_prompt_matching = f'''You are a witty content strategist. Your task is to find creative, funny, and compelling connections between products and trending news items using the provided dataframes.
+    system_prompt_matching = f"""You are a witty content strategist. Your task is to find creative, funny, and compelling connections between products and trending news items using the provided dataframes.
 
     You receive two dataframes in JSON format: one with products, and one with Google trends and news articles.
     product_dataframe: {product_dataframe_json}
@@ -108,7 +106,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
     - Only use the data provided, do not make up any data.
     - Do not make more than 10 matches.
     - If no good matches exist, return an empty array.
-    '''
+    """
 
     logger.info("Sending prompt to model for product-news matching.")
     response_matching_process = model.generate_content(
@@ -123,4 +121,7 @@ def matchmaker_agent(product_dataframe_str: str, trends_news_dataframe_str: str)
     except json.JSONDecodeError:
         logger.error("Error: The model did not return valid JSON.")
         logger.error(f"Raw response: {response_matching_process.text}")
-        return {"error": "Failed to parse model response as JSON", "raw_response": response_matching_process.text}
+        return {
+            "error": "Failed to parse model response as JSON",
+            "raw_response": response_matching_process.text,
+        }

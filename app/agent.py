@@ -16,14 +16,14 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
+from google.adk.planners import BuiltInPlanner
 from google.adk.tools import AgentTool, FunctionTool
-from google.adk.planners import BuiltInPlanner, PlanReActPlanner
+from google.genai import types
 from google.genai.types import ThinkingConfig
-from app.trend_watcher_agent import trend_watcher_agent
+
 from app.matchmaker import matchmaker_agent
 from app.product_data_retriever import get_product_data
-from app.marketing_creative import marketing_agent
-from google.genai import types
+from app.trend_watcher_agent import trend_watcher_agent
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
