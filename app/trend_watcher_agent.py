@@ -1,5 +1,5 @@
 from google.adk.agents import LlmAgent, SequentialAgent
-from google.adk.tools import AgentTool, google_search
+from google.adk.tools import google_search
 from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from mcp import StdioServerParameters
@@ -94,4 +94,3 @@ trend_watcher_agent = SequentialAgent(
         output_formatter_agent,
     ],
 )
-
