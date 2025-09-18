@@ -112,12 +112,65 @@ if __name__ == "__main__":
     **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
         """
     brandbook = (
-        "Our company is named Jumbo Supermarkten, a leading supermarket chain in the Netherlands. "
-        "We mainly use the colors yellow and black in our branding. Our logo features a bold, "
-        "modern font with a playful touch, often accompanied by a shopping cart icon. We aim to "
-        "convey a sense of affordability, variety, and convenience in our marketing materials. Our "
-        "tone of voice is friendly, approachable, and family-oriented, focusing on the joy of "
-        "shopping and the quality of our products."
+        """
+        Brand Guide: The Taste of Home
+
+        Goal:
+        Create a consistent social media presence that is Artisanal, Warm, Authentic, and Personal.
+
+        ------------------------------------------------------------
+        1. Color Palette: Earthy & Fresh
+        ------------------------------------------------------------
+        Primary Colors:
+        Terracotta Orange (#D97D51)
+        Forest Green (#3A5A40)
+        Cream White (#F4F1DE)
+
+        Accent Colors:
+        Golden Yellow (#FFC300)
+        Soft Blue (#A8DADC)
+
+        ------------------------------------------------------------
+        2. Typography: Classic & Clean
+        ------------------------------------------------------------
+        Headlines: Use a classic serif font (e.g., Lora or Playfair Display)
+        Body & Prices: Use a clean sans-serif font (e.g., Lato or Montserrat)
+
+        ------------------------------------------------------------
+        3. Photography & Video: Natural & Fun
+        ------------------------------------------------------------
+        Visual Style:
+        Warm and inviting visuals
+        Use soft, natural daylight
+        Focus on texture and high-quality ingredients
+        Natural backgrounds (wood, linen, stone)
+
+        Guidelines:
+        Capture genuine, joyful moments with products
+        (e.g., tasting, baking, hands-on interactions)
+        Include helpful tips in short videos or overlays
+        Avoid overly posed or corporate imagery
+
+        ------------------------------------------------------------
+        4. Tone of Voice: Warm & Personal
+        ------------------------------------------------------------
+        Use a conversational, human tone
+        Write from a first-person or inclusive "we" perspective
+
+        Example Caption:
+        "Mijn absolute favoriet voor het weekend: onze oude boerenkaas. Ik eet 'm het liefst zo uit het vuistje. Geniet ervan!"
+
+        Keywords to Use:
+        Enjoy
+        Discover
+        Tip
+        Delicious
+
+        Calls-to-Action:
+        Try our favorite
+        Let us know what you think!
+        Taste the difference
+        """
     )
 
     logging.info("=" * 60)
