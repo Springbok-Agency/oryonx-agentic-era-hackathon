@@ -42,7 +42,24 @@ def marketing_agent(matchmaker_output, lmm_model=None, num_concepts=3):
         "- A vivid description of the news items and their connection to the products.\n"
         "- A clear marketing strategy, including purpose, timing, and target audience.\n"
         "- The main tagline, seamlessly integrated into the story and should have a clear reference to the news item to make the connection clear to the audience.\n"
-        "- Detailed ideas for both an Instagram image and video post, with the main tagline included. The image and video concepts should be funny, and clearly reference the news item in a creative way.\n"
+        "- Detailed ideas for both an Instagram image and video post, with the main tagline included. "
+        "For the image post, provide:\n"
+        "  - Subject: Who or what is in the scene (person, animal, object, or landscape). Make sure it references the product and news item.\n"
+        "  - Context: Where is the subject? (indoors, city street, forest, etc.) Make sure it references the news item.\n"
+        "  - Action: What is happening in the image? Make sure it references the product and news item.\n"
+        "  - Style: The visual aesthetic (cinematic, animated, stop-motion, etc.). Make sure it references the product and news item.\n"
+        "  - Composition: How the shot is framed (wide shot, close-up, etc.). \n"
+        "  - Ambiance: Mood and lighting (warm tones, blue light, nighttime, etc.).\n"
+        "  - Make sure the main tagline is mentioned and both the news item and product are clearly referenced.\n"
+        "For the video post, provide:\n"
+        "  - Subject: Who or what is in the scene (person, animal, object, or landscape). Make sure it references the product and news item.\n"
+        "  - Context: Where is the subject? (indoors, city street, forest, etc.) Make sure it references the news item.\n"
+        "  - Action: What is the subject doing (walking, jumping, turning their head, etc.). Make sure it references the product and news item.\n"
+        "  - Style: The visual aesthetic (cinematic, animated, stop-motion, etc.).\n"
+        "  - Camera motion: How the camera moves (aerial shot, eye-level, top-down, low-angle, etc.).\n"
+        "  - Composition: How the shot is framed (wide shot, close-up, etc.).\n"
+        "  - Ambiance: Mood, music and lighting (warm tones, blue light, nighttime, etc.).\n"
+        "  - Make sure the main tagline is mentioned and both the news item and product are clearly referenced.\n"
         "- A catchy Instagram caption ready for posting.\n"
         "Use the following matches:\n" + json.dumps(matchmaker_output[:num_concepts], indent=2) +
         "\nIMPORTANT: Return only the three marketing plans as three, well-written stories and make sure you ask the end user which of the three marketing plans they prefer for further implementation."
@@ -129,10 +146,3 @@ if __name__ == '__main__':
   matchmaker_output = json.loads(matchmaker_dataframe)
   concepts = marketing_agent(matchmaker_output)
   print(concepts)
-#   if concepts:
-#     for i, concept in enumerate(concepts, 1):
-#       print(f"Concept {i}:")
-#       print(f"Product: {concept['product']}")
-#       print(f"Tagline: {concept['tagline']}")
-#       print(f"Marketing Plan:\n{concept['marketing_plan']}")
-#       print("-"*40)
