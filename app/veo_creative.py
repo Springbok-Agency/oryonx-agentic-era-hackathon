@@ -116,7 +116,7 @@ def generate_and_show_video(marketing_plan: str, brandbook: str = ""):
         f"Ensure the video aligns with these brand guidelines: {brandbook}. "
         f"Use warm, inviting visuals with natural lighting and focus on product quality and positive emotions. "
         f"Keep content family-friendly and appropriate for all audiences."
-        f"The tag line must be there"
+        f"The tag line from the marketing plan and the product name must be there"
     )
 
     logging.info(f"📝 Prompt: {text_prompt}")
