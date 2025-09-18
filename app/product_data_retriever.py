@@ -25,7 +25,7 @@ def get_product_data(
     project: str = GCP_PROJECT_ID,
     dataset: str = BQ_DATASET,
     table: str = BQ_TABLE,
-    limit: int = 10,
+    limit: int = 5,
 ) -> str:
     """Get all product data from BigQuery as a JSON string.
 
@@ -54,8 +54,8 @@ def get_product_data(
         serialized_row = {k: _serialize_date(v) for k, v in row_dict.items()}
         products.append(serialized_row)
     
-    # Convert to JSON string
-    return json.dumps(products, indent=2)
+    # Convert to JSON string (compact format to avoid function call truncation)
+    return json.dumps(products)
 
 
 if __name__ == "__main__":
