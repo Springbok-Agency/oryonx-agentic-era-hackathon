@@ -84,14 +84,14 @@ root_agent = Agent(
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
             include_thoughts=True,  # Include the agent's internal thoughts in the output for transparency
-            thinking_budget=1024,  # Limit the number of tokens/thoughts the agent can use for reasoning
+            thinking_budget=32768,  # Limit the number of tokens/thoughts the agent can use for reasoning
         )
     ),
     generate_content_config=types.GenerateContentConfig(
         # High values are creative, low values are deterministic
         temperature=0.2,
         # Increase this if we want more detailed output.
-        max_output_tokens=250,
+        max_output_tokens=65536,
         safety_settings=[
             types.SafetySetting(
                 category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
