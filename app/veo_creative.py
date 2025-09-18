@@ -11,7 +11,9 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
 # Initialize the Gen AI client
-client = Client()
+client = Client(
+    location="us-central1"
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -42,7 +44,7 @@ def generate_and_show_video(marketing_plan: str):
         logging.info("⏳ Please wait...")
 
         operation = client.models.generate_videos(
-            model="veo-3.0-fast-generate-001",
+            model="veo-3.0-generate-001",
             prompt=text_prompt,
             config=types.GenerateVideosConfig(aspectRatio="9:16"),
         )

@@ -10,7 +10,9 @@ os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
 os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
 # Initialize the Gen AI client
-client = Client()
+client = Client(
+    location="us-central1"
+)
 
 logging.basicConfig(
     level=logging.INFO,
