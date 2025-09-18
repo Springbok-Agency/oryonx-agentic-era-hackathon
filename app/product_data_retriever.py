@@ -1,9 +1,8 @@
 import datetime
 import json
-from typing import Any, Dict, List
+from typing import Any
 
 from google.cloud import bigquery
-
 
 GCP_PROJECT_ID = "qwiklabs-gcp-03-3444594577c6"
 BQ_DATASET = "product_data"
@@ -36,7 +35,7 @@ def get_product_data(
     Returns:
         str: A JSON string containing the product data records.
     """
-    
+
     print("Getting product data")
 
     client = bigquery.Client(project=project)
@@ -44,9 +43,9 @@ def get_product_data(
     query = f"SELECT * FROM `{project}.{dataset}.{table}` LIMIT {limit}"
     query_job = client.query(query)
     results = query_job.result()
-    
+
     print("Got results")
-    
+
     # Convert BigQuery Row objects to dictionaries and serialize dates
     products = []
     for row in results:
@@ -55,9 +54,9 @@ def get_product_data(
         # Serialize any date objects
         serialized_row = {k: _serialize_date(v) for k, v in row_dict.items()}
         products.append(serialized_row)
-        
+
     print("Done getting product data")
-    
+
     # Convert to JSON string (compact format to avoid function call truncation)
     return json.dumps(products)
 

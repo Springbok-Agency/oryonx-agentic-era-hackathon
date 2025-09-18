@@ -67,11 +67,11 @@ def matchmaker_agent(
         contents=[system_prompt_sentiment]
     )
     logger.info("Received filtered news/trends from model.")
-    
+
     filtered_news_obj = json.loads(news_without_sensitive_subjects.text)
     trends_news_dataframe_str = json.dumps(filtered_news_obj)
 
-    
+
 
     system_prompt_matching = f"""You are a witty content strategist. Your task is to find creative, funny, and compelling connections between products and trending news items using the provided dataframes.
 
