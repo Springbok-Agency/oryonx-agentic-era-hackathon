@@ -23,16 +23,21 @@ else:
 
 def matchmaker_agent(
     product_dataframe_str: str, trends_news_dataframe_str: str
-) -> dict:
+) -> list:
     """
-    Agent that receives products, google trends and news articles and finds matches between them for marketing purposes.
+    Matches products to trending topics and news for marketing purposes.
 
     Args:
-        product_dataframe_str: A JSON string representing a dataframe of products.
-        trends_news_dataframe_str: A JSON string representing a dataframe of trends and news.
+        product_dataframe_str (str): JSON string of product data.
+        trends_news_dataframe_str (str): JSON string of trends and news data.
 
     Returns:
-        A dictionary of matches. In case of an error, a dictionary with an error message is returned.
+        list[dict]: Each dict contains:
+            - product_name (str)
+            - trend_title (str)
+            - trend_description (str)
+            - similarity_description (str)
+        Returns an empty list if no matches are found or on error.
     """
     logger.info("Starting matchmaker_agent function.")
     try:
@@ -121,7 +126,5 @@ def matchmaker_agent(
     except json.JSONDecodeError:
         logger.error("Error: The model did not return valid JSON.")
         logger.error(f"Raw response: {response_matching_process.text}")
-        return {
-            "error": "Failed to parse model response as JSON",
-            "raw_response": response_matching_process.text,
-        }
+        # Return empty list for error cases to maintain consistent return type
+        return []
