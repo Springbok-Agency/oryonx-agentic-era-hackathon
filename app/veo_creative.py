@@ -60,7 +60,7 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
         operation = client.models.generate_videos(
             model="veo-3.0-fast-generate-001",
             prompt=text_prompt,
-            config=types.GenerateVideosConfig(aspectRatio="16:9"),
+            config=types.GenerateVideosConfig(aspectRatio="9:16"),
         )
 
         while not operation.done:
@@ -86,31 +86,43 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
 
 
 if __name__ == '__main__':
-    marketing_plan = ("""
-        **Marketing Plan 2: Free Range Eggs & The Giant Pancake**
-        
-        **The Story:**  Hold onto your spatulas!  Chefs in Amsterdam just flipped the world's largest pancake, 
-        shattering previous records and sending delicious aromas across the city!  This incredible feat required not 
-        just a massive griddle, but a truly colossal number of eggs.  And we all know that a truly great pancake 
-        starts with high-quality ingredients.  That's where our Free Range Eggs come in.  The fluffy texture, 
-        the rich flavor, the knowledge that the hens lived happy and free – it all contributes to a record-breaking 
-        breakfast.
-        
-        **Marketing Strategy:**
-        **Purpose:** Connect our Free Range Eggs to a fun, trending news story and highlight the superior quality of our eggs.
-        **Timing:** Immediate launch to ride the wave of news coverage.  A two-week campaign is ideal.
-        **Target Audience:**  Breakfast lovers, health-conscious consumers, and people who appreciate ethically sourced food.
-        
-        **Tagline:**  "From Our Hens to the World's Largest Pancake: The Secret Ingredient is JUMBO Free Range Eggs."
-        
-        **Instagram Post Ideas:** **Image:** A split image showing a picture of the giant pancake next to a carton of 
-        our Free Range Eggs.  The tagline is overlaid. **Video:** A time-lapse video of pancake batter being poured 
-        and cooked, emphasizing the large scale of the operation and the role of our eggs. The tagline is included as 
-        text on the video.
-        
-        **Instagram Caption:**  "They didn't just flip a pancake, they flipped the world!  Discover the secret to 
-        truly amazing pancakes: JUMBO Free Range Eggs.  #WorldsLargestPancake #FreeRangeEggs 
-        #PancakePerfection #BreakfastGoals""")
+    marketing_plan = """
+    **Marketing Plan 2: Organic Milk & Cat Mayor**
+
+    **Story:**  The internet is melting! A cat named Whiskers just won a local election, becoming the honorary mayor for a day.  This furry leader proves that even the most unconventional candidates can win hearts (and votes!). And what does a hard-working (and adorable) mayor deserve after a long day of campaigning?  A refreshing glass of our Organic Milk, of course!  It's the purr-fect way to celebrate a victory, no matter how unexpected.
+
+    **Purpose:** To associate our Organic Milk with the heartwarming and viral story of Whiskers the cat mayor, emphasizing the product's wholesome and refreshing qualities.
+
+    **Timing:**  While the Whiskers story is trending on social media.
+
+    **Target Audience:**  Cat lovers, people who appreciate wholesome products, and those who enjoy sharing lighthearted and feel-good content.
+
+    **Tagline:**  "Whiskers Won the Election, and You'll Win with Our Organic Milk!"
+
+
+    **Instagram Image Post:**
+
+    **Subject:**  A cute cat (ideally resembling Whiskers) enjoying a small bowl of Organic Milk.
+    **Context:** A miniature mayoral office, complete with a tiny desk and chair.
+    **Action:** The cat is contentedly lapping up the milk.
+    **Style:**  Cute and whimsical, cartoonish, with a touch of vintage charm.
+    **Composition:**  Close-up shot focusing on the cat and milk bowl.
+    **Ambiance:**  Warm and soft lighting, creating a cozy and playful atmosphere.
+
+
+    **Instagram Video Post:**
+
+    **Subject:** A montage of short clips of a cat (ideally resembling Whiskers) in different mayoral scenarios: sitting in a tiny chair, “signing” documents, wearing a miniature mayoral sash, and finally enjoying a glass of Organic Milk.
+    **Context:**  A set designed like a miniature city hall.
+    **Action:** The cat gracefully moves about the miniature office, looking regal and content, and then finally drinks some milk.
+    **Style:**  A lighthearted and playful style, with upbeat music.
+    **Camera Motion:**  A mix of close-ups and wide shots, with smooth transitions between scenes.
+    **Composition:**  A variety of shots to showcase the cat's "mayoral duties" and milk-drinking moment.
+    **Ambiance:** Upbeat, playful music; soft, bright lighting.
+
+
+    **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
+        """
     brandbook_voorbeeld = ("Our company is named Jumbo Supermarkten, a leading supermarket chain in the Netherlands. "
                            "We mainly use the colors yellow and black in our branding. Our logo features a bold, "
                            "modern font with a playful touch, often accompanied by a shopping cart icon. We aim to "
