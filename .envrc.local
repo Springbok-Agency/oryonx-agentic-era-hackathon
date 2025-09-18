@@ -1,0 +1,4 @@
+# Personal gcloud configuration for student-03-8376c5edf462@qwiklabs.net
+gcloud config set account student-03-8376c5edf462@qwiklabs.net
+gcloud auth application-default login --account=student-03-8376c5edf462@qwiklabs.net
+gcloud auth application-default set-quota-project $GOOGLE_CLOUD_PROJECT
