@@ -1,32 +1,34 @@
 import logging
-import time
-from pathlib import Path
 import os
 import platform
 import subprocess
+import time
+from pathlib import Path
+
 from dotenv import load_dotenv
-from google.genai import types
 from google import genai
+from google.genai import types
 from google.oauth2 import service_account
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 
 credentials = service_account.Credentials.from_service_account_file(
-    'service-account.json',
+    "service-account.json",
     scopes=[
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/generative-language'
-    ]
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/generative-language",
+    ],
 )
 
-dotenv_path = Path(__file__).parent.parent / '.env'
+dotenv_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=dotenv_path)
 
 client = genai.Client(api_key="AIzaSyA3fs8OD2JxzzrBb-SyrjUFPJMLxwoNGDw")
+
 
 def open_file(filepath: str):
     if platform.system() == "Windows":
@@ -35,6 +37,7 @@ def open_file(filepath: str):
         subprocess.run(["open", filepath])
     else:
         subprocess.run(["xdg-open", filepath])
+
 
 def generate_and_show_video(brandbook: str, marketing_plan: str):
     """
@@ -68,12 +71,14 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
             time.sleep(20)
             operation = client.operations.get(operation)
 
-        video_path="marketing_video.mp4"
+        video_path = "marketing_video.mp4"
 
         generated_video = operation.response.generated_videos[0]
         client.files.download(file=generated_video.video)
         generated_video.video.save("marketing_video.mp4")
-        logging.info(f"✅ Successfully generated video and saved to videos/marketing_video.mp4")
+        logging.info(
+            "✅ Successfully generated video and saved to videos/marketing_video.mp4"
+        )
 
         logging.info("🖼️ Opening Video in your default viewer...")
         open_file(video_path)
@@ -81,11 +86,11 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
         return operation.response.generated_videos[0]
 
     except Exception as e:
-        logging.error(f"❌ Error generating video: {str(e)}")
+        logging.error(f"❌ Error generating video: {e!s}")
         return {"error": str(e)}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     marketing_plan = """
     **Marketing Plan 2: Organic Milk & Cat Mayor**
 
@@ -123,12 +128,14 @@ if __name__ == '__main__':
 
     **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
         """
-    brandbook_voorbeeld = ("Our company is named Jumbo Supermarkten, a leading supermarket chain in the Netherlands. "
-                           "We mainly use the colors yellow and black in our branding. Our logo features a bold, "
-                           "modern font with a playful touch, often accompanied by a shopping cart icon. We aim to "
-                           "convey a sense of affordability, variety, and convenience in our marketing materials. Our "
-                           "tone of voice is friendly, approachable, and family-oriented, focusing on the joy of "
-                           "shopping and the quality of our products.")
+    brandbook_voorbeeld = (
+        "Our company is named Jumbo Supermarkten, a leading supermarket chain in the Netherlands. "
+        "We mainly use the colors yellow and black in our branding. Our logo features a bold, "
+        "modern font with a playful touch, often accompanied by a shopping cart icon. We aim to "
+        "convey a sense of affordability, variety, and convenience in our marketing materials. Our "
+        "tone of voice is friendly, approachable, and family-oriented, focusing on the joy of "
+        "shopping and the quality of our products."
+    )
 
     logging.info("=" * 60)
     logging.info("🎨 VEO AI - MARKETING VIDEO GENERATOR")
