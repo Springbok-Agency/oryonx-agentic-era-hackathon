@@ -16,9 +16,14 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
+<<<<<<< HEAD
 from google.adk.tools import AgentTool, FunctionTool
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig
+=======
+from google.adk.tools import AgentTool, google_search
+from matchmaker import matchmaker_agent
+>>>>>>> origin/main
 
 
 from app.trend_watcher_agent import trend_watcher_agent

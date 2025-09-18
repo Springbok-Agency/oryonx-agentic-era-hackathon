@@ -45,7 +45,7 @@ google_search_agent = LlmAgent(
 ## EXAMPLE:
 If your input is `- **Jimmy Fallon** (500+ searches)`, your output should be:
 
-**Jimmy Fallon**: The American late-night host is trending amidst news of the cancellation of "Jimmy Kimmel Live!" and former President Trump's call for NBC to also axe "The Tonight Show Starring Jimmy Fallon." Additionally, Fallon is set to be the next guest on the "New Heights" podcast.
+**Jimmy Fallon** (500+ searches): The American late-night host is trending amidst news of the cancellation of "Jimmy Kimmel Live!" and former President Trump's call for NBC to also axe "The Tonight Show Starring Jimmy Fallon." Additionally, Fallon is set to be the next guest on the "New Heights" podcast.
 """,
     tools=[google_search],
 )
