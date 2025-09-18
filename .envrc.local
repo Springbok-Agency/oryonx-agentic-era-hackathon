@@ -1,0 +1,6 @@
+# Personal gcloud configuration for student-03-8376c5edf462@qwiklabs.net
+if [[ "$(gcloud config get-value account 2>/dev/null)" != "student-03-8376c5edf462@qwiklabs.net" ]]; then
+  gcloud config set account student-03-8376c5edf462@qwiklabs.net
+  gcloud auth application-default login --account=student-03-8376c5edf462@qwiklabs.net
+  gcloud auth application-default set-quota-project $GOOGLE_CLOUD_PROJECT
+fi
