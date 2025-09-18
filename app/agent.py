@@ -32,6 +32,3 @@ root_agent = Agent(
     instruction="You are a helpful AI assistant designed to analyze trends, and create marketing content around them.",
     tools=[AgentTool(trend_watcher), AgentTool(matchmaker_agent)],
 )
-
-
-
