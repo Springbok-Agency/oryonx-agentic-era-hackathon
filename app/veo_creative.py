@@ -3,12 +3,19 @@ import os
 import platform
 import subprocess
 import time
-from pathlib import Path
 
-from dotenv import load_dotenv
-from google import genai
+import google.auth
 from google.genai import types
-from google.oauth2 import service_account
+from google.genai import Client
+
+
+_, project_id = google.auth.default()
+os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
+os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "global")
+os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
+
+# Initialize the Gen AI client
+client = Client()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,35 +23,13 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-credentials = service_account.Credentials.from_service_account_file(
-    "service-account.json",
-    scopes=[
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/generative-language",
-    ],
-)
-
-dotenv_path = Path(__file__).parent.parent / ".env"
-load_dotenv(dotenv_path=dotenv_path)
-
-client = genai.Client(api_key="AIzaSyA3fs8OD2JxzzrBb-SyrjUFPJMLxwoNGDw")
 
 
-def open_file(filepath: str):
-    if platform.system() == "Windows":
-        os.startfile(filepath)
-    elif platform.system() == "Darwin":
-        subprocess.run(["open", filepath])
-    else:
-        subprocess.run(["xdg-open", filepath])
-
-
-def generate_and_show_video(brandbook: str, marketing_plan: str):
+def generate_and_show_video(marketing_plan: str):
     """
     Generates video using the new Google Gen AI SDK with optional reference images.
 
     Args:
-        brandbook: Brand guidelines to follow
         marketing_plan: Description of the marketing campaign
     """
 
@@ -53,7 +38,7 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
         f"The video should be creative, engaging, and suitable for use in a marketing campaign. "
         f"Make sure that the video is relevant to the marketing plan and captures its essence. "
         f"You are allowed to use text in the video."
-        f"Make sure the video aligns with the following brandbook guidelines: {brandbook}."
+        f"Make sure the video aligns with the following brandbook guidelines."
     )
 
     try:
@@ -77,16 +62,14 @@ def generate_and_show_video(brandbook: str, marketing_plan: str):
         client.files.download(file=generated_video.video)
         generated_video.video.save("marketing_video.mp4")
         logging.info(
-            "✅ Successfully generated video and saved to videos/marketing_video.mp4"
+            "Successfully generated video and saved to videos/marketing_video.mp4"
         )
 
-        logging.info("🖼️ Opening Video in your default viewer...")
-        open_file(video_path)
-        logging.info("🎉 Video should now be open in your video player.")
+        logging.info("Video generated successfully and saved to marketing_video.mp4")
         return operation.response.generated_videos[0]
 
     except Exception as e:
-        logging.error(f"❌ Error generating video: {e!s}")
+        logging.error(f"Error generating video: {e!s}")
         return {"error": str(e)}
 
 
@@ -128,7 +111,7 @@ if __name__ == "__main__":
 
     **Instagram Caption:**  "Even the purr-fect mayor needs a little refueling! Celebrate Whiskers’ victory (and your day) with our Organic Milk. #CatMayor #WhiskersWins #OrganicGoodness #HappyCatsHappyHumans"
         """
-    brandbook_voorbeeld = (
+    brandbook = (
         "Our company is named Jumbo Supermarkten, a leading supermarket chain in the Netherlands. "
         "We mainly use the colors yellow and black in our branding. Our logo features a bold, "
         "modern font with a playful touch, often accompanied by a shopping cart icon. We aim to "
@@ -141,4 +124,4 @@ if __name__ == "__main__":
     logging.info("🎨 VEO AI - MARKETING VIDEO GENERATOR")
     logging.info("=" * 60)
 
-    generate_and_show_video(brandbook_voorbeeld, marketing_plan)
+    generate_and_show_video(brandbook, marketing_plan)

@@ -31,7 +31,7 @@ def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
     Each concept includes: a marketing plan, a funny tagline, and the product name.
     Returns a dictionary of concepts.
     """
-    lmm_model = GenerativeModel("gemini-1.5-flash")
+    lmm_model = GenerativeModel("gemini-2.5-flash")
 
     prompt = (
         "You are a creative marketing agent. Using the following product-news matches, generate ONE comprehensive marketing plan PER product-news item as a story that can be shared internally with stakeholders and is ready for direct implementation by the marketing team. "
@@ -67,10 +67,6 @@ def marketing_agent(matchmaker_output: str, num_concepts: int = 3) -> str:
     )
 
     response = lmm_model.generate_content(contents=[prompt])
-    try:
-        concepts = json.loads(response.text)
-        return concepts
-    except Exception as e:
-        logger.error(f"Failed to parse LMM response: {e}")
-        logger.error(f"Raw response: {response.text}")
-        return None
+    
+    return response.text
+    

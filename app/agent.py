@@ -24,6 +24,8 @@ from google.genai.types import ThinkingConfig
 from app.matchmaker import matchmaker_agent
 from app.product_data_retriever import get_product_data
 from app.trend_watcher_agent import trend_watcher_agent
+from app.marketing_creative import marketing_agent
+from app.veo_creative import generate_and_show_video
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
@@ -58,11 +60,14 @@ root_agent = Agent(
         1. FIRST: Call `trend_watcher_agent` with query "find current trending topics"
         2. SIMULTANEOUSLY: Call `get_product_data` to retrieve available products
         3. THEN: Call `matchmaker_agent` with the trend and product data to find matches
-        4. FINALLY: Present complete marketing insights
+        4. THEN: Call `marketing_agent` with the matches to generate marketing insights. Use 1-1 / exact output of the marketing agent and give it back to the user and present the 3 options.
+        5. THEN Let the user choose the best option.
+        6. FINALLY: Use the input from the chosen marketing plan as input for the video and image generator to generate the video and image simultaneously.
+
 
         ## CRITICAL RULES:
         - NEVER ask "Would you like me to..." or "Should I start by..."
-        - NEVER wait for user confirmation
+        - NEVER wait for user confirmation, UNLESS you are presenting the 3 marketing option to the user.
         - IMMEDIATELY start with tool calls upon any user input
         - Execute the complete workflow every time
         - Think through your plan, then ACT immediately
@@ -79,7 +84,8 @@ root_agent = Agent(
         AgentTool(trend_watcher_agent),
         FunctionTool(func=get_product_data),
         FunctionTool(func=matchmaker_agent),
-        # FunctionTool(func=marketing_agent),
+        FunctionTool(func=marketing_agent),
+        FunctionTool(func=generate_and_show_video),
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
