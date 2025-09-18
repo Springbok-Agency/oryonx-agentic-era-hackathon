@@ -21,7 +21,7 @@ from google.adk.tools import AgentTool, FunctionTool
 from google.genai import types
 from google.genai.types import ThinkingConfig
 
-from app.matchmaker import matchmaker_agent
+from app.matchmaker import matchmaker_agent_func
 from app.product_data_retriever import get_product_data
 from app.trend_watcher_agent import trend_watcher_agent
 
@@ -77,16 +77,14 @@ root_agent = Agent(
     ),
     tools=[
         AgentTool(trend_watcher_agent),
-        # FunctionTool(func=get_product_data),
-        # FunctionTool(func=matchmaker_agent),
+        FunctionTool(func=get_product_data),
+        FunctionTool(func=matchmaker_agent_func),
         # FunctionTool(func=marketing_agent),
-        get_product_data,
-        matchmaker_agent,
     ],
     planner=BuiltInPlanner(
         thinking_config=ThinkingConfig(
             include_thoughts=True,  # Include the agent's internal thoughts in the output for transparency
-            thinking_budget=1024,  # Limit the number of tokens/thoughts the agent can use for reasoning
+            thinking_budget=2048,  # Limit the number of tokens/thoughts the agent can use for reasoning
         )
     ),
     generate_content_config=types.GenerateContentConfig(

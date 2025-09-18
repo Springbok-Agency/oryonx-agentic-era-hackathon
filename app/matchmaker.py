@@ -21,7 +21,7 @@ else:
     os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
 
 
-def matchmaker_agent(
+def matchmaker_agent_func(
     product_dataframe_str: str, trends_news_dataframe_str: str
 ) -> list:
     """
