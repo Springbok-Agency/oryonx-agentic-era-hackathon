@@ -19,7 +19,7 @@ BQ_DATASET = "product_data"
 BQ_TABLE = "product_data_table"
 
 
-def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, table: str = BQ_TABLE, limit: int = 10):
+def get_product_data(project: str = GCP_PROJECT_ID, dataset: str = BQ_DATASET, table: str = BQ_TABLE, limit: int = 40):
     """Get all product data from BigQuery.
 
     Args:
