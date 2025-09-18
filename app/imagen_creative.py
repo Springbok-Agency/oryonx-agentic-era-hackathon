@@ -33,8 +33,7 @@ client = genai.Client(
 )
 
 
-def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_images: int = 1,
-                             reference_images: list = None):
+def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_images: int = 1):
     """
     Generates images using the new Google Gen AI SDK with optional reference images.
 
@@ -42,63 +41,27 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
         brandbook: Brand guidelines to follow
         marketing_plan: Description of the marketing campaign
         number_of_images: Number of images to generate
-        reference_images: List of image paths or PIL Images to use as reference
     """
 
     text_prompt = (
         f"Create a high-quality, visually appealing image that represents the following marketing plan: {marketing_plan}. "
+        f"From this marketing plan, use the part that describes the core message or theme to inspire the image. "
         f"The image should be creative, engaging, and suitable for use in a marketing campaign. "
         f"Make sure that the image is relevant to the marketing plan and captures its essence. "
         f"You are allowed to use text in the image. "
         f"Make sure the image aligns with the following brandbook guidelines: {brandbook}."
     )
 
-    if reference_images:
-        text_prompt += (
-            f" Use the provided reference image(s) as inspiration and incorporate similar elements, "
-            f"products, or styling into the new marketing image. The reference images show products "
-            f"or elements that should be featured or represented in the generated marketing material."
-        )
-
     try:
         logging.info(f"🎨 Generating {number_of_images} image(s)...")
-        if reference_images:
-            logging.info(f"📸 Using {len(reference_images)} reference image(s)")
         logging.info(f"📝 Prompt: {text_prompt}")
         logging.info("⏳ Please wait...")
 
-        content_parts = [text_prompt]
-
-        if reference_images:
-            for i, ref_image in enumerate(reference_images):
-                try:
-                    if isinstance(ref_image, str):
-                        with open(ref_image, 'rb') as f:
-                            image_data = f.read()
-                        content_parts.append(
-                            Part.from_bytes(data=image_data, mime_type="image/jpeg")
-                        )
-                        logging.info(f"   📁 Added local image: {ref_image}")
-
-                    elif isinstance(ref_image, Image.Image):
-                        # Handle PIL Image object
-                        buffer = io.BytesIO()
-                        ref_image.save(buffer, format='JPEG')
-                        image_data = buffer.getvalue()
-                        content_parts.append(
-                            Part.from_bytes(data=image_data, mime_type="image/jpeg")
-                        )
-                        logging.info(f"   🖼️  Added PIL Image object {i + 1}")
-
-                except Exception as img_error:
-                    logging.warning(f"⚠️  Could not load reference image {i + 1}: {img_error}")
-                    continue
-
         response = client.models.generate_images(
             model='imagen-4.0-generate-001',
-            prompt=text_prompt,  # Use text_prompt (string) only
+            prompt=text_prompt,
             config=types.GenerateImagesConfig(
-                aspect_ratio="16:9",
+                aspect_ratio="9:16",
                 number_of_images=number_of_images,
                 image_size="2k",
                 enhance_prompt=True,
@@ -126,15 +89,10 @@ def generate_and_show_images(brandbook: str, marketing_plan: str, number_of_imag
 if __name__ == '__main__':
     marketing_plan = "promote the gift card as a perfect present for any occasion, highlighting its versatility and ease of use. use the slogan; om van elke dag een cadeautje te maken (make every day a gift). the target audience is people looking for a convenient and thoughtful gift option for friends and family. the campaign should emphasize the wide range of products available on bol.com that can be purchased with the gift card, making it an ideal choice for birthdays, holidays, and special celebrations."
     brandbook_bol = ("Use colors of the images, modern and sleek design, minimalistic style, text in bold Arial font. "
-                     "The brand is called Cirkel.com and is a leading e-commerce platform in the Netherlands, known for its wide range of products ")
+                     "The brand is called Bol.com and is a leading e-commerce platform in the Netherlands, known for its wide range of products ")
 
     logging.info("=" * 60)
-    logging.info("🎨 IMAGEN AI - MARKETING IMAGE GENERATOR (MIGRATED)")
+    logging.info("🎨 IMAGEN AI - MARKETING IMAGE GENERATOR")
     logging.info("=" * 60)
-    logging.info("🔄 Now using Google Gen AI SDK instead of deprecated Vertex AI SDK")
 
-    reference_image_paths = [
-        "bol.com-cadeaukaart-relatiegeschenk.jpg",
-        "Logo_bol.jpg"
-    ]
-    generate_and_show_images(brandbook_bol, marketing_plan, number_of_images=3, reference_images=reference_image_paths)
+    generate_and_show_images(brandbook_bol, marketing_plan, number_of_images=3)
