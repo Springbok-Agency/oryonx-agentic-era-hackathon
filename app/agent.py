@@ -83,11 +83,15 @@ root_agent = Agent(
             ```
         """
     ),
-    planner=BuiltInPlanner(
-        thinking_config=ThinkingConfig(
-            include_thoughts=True,  # Allows you to debug the agent's reasoning
-            thinking_budget=1024,
-        )
-    ),
-    tools=[AgentTool(trend_watcher_agent)],
+    tools=[
+        # Your sub-agent, correctly wrapped as a tool
+        AgentTool(trend_watcher),
+        # Your Python functions, now correctly wrapped as tools
+        FunctionTool(
+            func=matchmaker_agent,
+            # Pass the static product data when defining the tool
+            kwargs={"product_dataframe": product_dataframe},
+        ),
+        FunctionTool(func=marketing_agent),
+    ],
 )
