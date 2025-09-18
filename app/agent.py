@@ -16,12 +16,14 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import AgentTool
+from google.adk.tools import AgentTool, FunctionTool
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig
 
 
 from app.trend_watcher_agent import trend_watcher_agent
+from app.matchmaker import matchmaker_agent, product_dataframe
+from app.marketing_creative import marketing_agent
 
 _, project_id = google.auth.default()
 os.environ.setdefault("GOOGLE_CLOUD_PROJECT", project_id)
@@ -85,10 +87,7 @@ root_agent = Agent(
     ),
     tools=[
         AgentTool(trend_watcher_agent),
-        FunctionTool(
-            func=matchmaker_agent,
-            kwargs={"product_dataframe": product_dataframe},
-        ),
+        # FunctionTool(func=matchmaker_agent),
         FunctionTool(func=marketing_agent),
     ],
 )
