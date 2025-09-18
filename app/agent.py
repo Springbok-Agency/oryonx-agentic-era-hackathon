@@ -85,9 +85,16 @@ root_agent = Agent(
             ```
         """
     ),
+    
     tools=[
         AgentTool(trend_watcher_agent),
         # FunctionTool(func=matchmaker_agent),
         # FunctionTool(func=marketing_agent),
     ],
+    planner=BuiltInPlanner(
+        thinking_config=ThinkingConfig(
+            include_thoughts=True,
+            thinking_budget=1024,
+        )
+    ),
 )
