@@ -16,7 +16,7 @@ import os
 
 import google.auth
 from google.adk.agents import Agent
-from google.adk.tools import AgentTool
+from google.adk.tools import AgentTool, google_search
 
 from app.trend_watcher import trend_watcher
 
