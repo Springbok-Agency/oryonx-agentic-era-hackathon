@@ -240,6 +240,9 @@ tests/load_test/.results/*.html
 tests/load_test/.results/*.csv
 locust_env
 my_env.tfvars
+deployment/terraform/dev/terraform.tfstate
+deployment/terraform/dev/vars/env.tfvars
+deployment/terraform/vars/env.tfvars
 .streamlit_chats
 .saved_chats
 .env
